@@ -3,7 +3,7 @@ excluded:
   - ${PWD}/Pods
   - ${PWD}/DerivedData
   - ${PWD}/.build
-  - ${PWD}/Tools/.build
+  - ${PWD}/Tools
   - ${PWD}/Tests/OpenFeatureTests/MockingbirdMocks/
   - ${PWD}/Sources/OpenFeature/FlagResolver
 
