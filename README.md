@@ -54,5 +54,5 @@ You can automatically format your code using:
 ## Running tests from cmd-line
 
 ```shell
-./scripts/run_tests.sh
+swift test
 ```
