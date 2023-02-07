@@ -1,4 +1,4 @@
-# OpenFeature
+# OpenFeature Swift SDK
 
 Swift implementation of the OpenFeature SDK.
 
