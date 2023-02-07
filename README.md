@@ -6,11 +6,11 @@ Swift implementation of the OpenFeature SDK.
 
 ### Adding the package dependency
 
-If you manage dependencies through XCode go to "Add package" and enter `git@ghe.spotify.net:konfidens/openfeature-swift-sdk.git`.
+If you manage dependencies through Xcode go to "Add package" and enter `git@github.com:spotify/openfeature-swift-sdk.git`.
 
 If you manage dependencies through SPM, in the dependencies section of Package.swift add:
 ```swift
-.package(url: "git@ghe.spotify.net:konfidens/openfeature-swift-sdk.git", from: "0.1.3")
+.package(url: "git@github.com:spotify/openfeature-swift-sdk.git", from: "0.1.0")
 ```
 
 and in the target dependencies section add:
