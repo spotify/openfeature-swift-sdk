@@ -7,12 +7,12 @@ let package = Package(
     name: "OpenFeature",
     platforms: [
         .iOS(.v14),
-        .macOS(.v12)
+        .macOS(.v12),
     ],
     products: [
         .library(
             name: "OpenFeature",
-            targets: ["OpenFeature"])
+            targets: ["OpenFeature"]),
     ],
     dependencies: [
     ],
@@ -23,6 +23,6 @@ let package = Package(
         ),
         .testTarget(
             name: "OpenFeatureTests",
-            dependencies: ["OpenFeature"])
+            dependencies: ["OpenFeature"]),
     ]
 )
