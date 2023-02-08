@@ -34,11 +34,11 @@ let value = client.getBooleanValue(key: "flag", defaultValue: false)
 
 ## Development
 
-Open the project in XCode and build by Product -> Build.
+Open the project in Xcode and build by Product -> Build.
 
 ### Linting code
 
-Code is automatically linted during build in XCode, if you need to manually lint:
+Code is automatically linted during build in Xcode, if you need to manually lint:
 ```shell
 brew install swiftlint
 swiftlint
