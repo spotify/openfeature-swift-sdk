@@ -75,7 +75,7 @@ public enum AnyHook {
     case double(any DoubleHook)
     case object(any ObjectHook)
 
-    public func suppoprtsFlagValueType(flagValueType: FlagValueType) -> Bool {
+    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
         switch self {
         case .boolean(let booleanHook):
             return booleanHook.supportsFlagValueType(flagValueType: flagValueType)

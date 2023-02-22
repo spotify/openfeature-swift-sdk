@@ -7,7 +7,7 @@ class HookSupport {
         flagValueType: FlagValueType, hookCtx: HookContext<T>, error: Error, hooks: [AnyHook], hints: [String: Any]
     ) {
         hooks
-            .filter { hook in hook.suppoprtsFlagValueType(flagValueType: flagValueType) }
+            .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
             .forEach { hook in
                 switch hook {
                 case .boolean(let booleanHook):
@@ -37,7 +37,7 @@ class HookSupport {
     func afterAllHooks<T>(flagValueType: FlagValueType, hookCtx: HookContext<T>, hooks: [AnyHook], hints: [String: Any])
     {
         hooks
-            .filter { hook in hook.suppoprtsFlagValueType(flagValueType: flagValueType) }
+            .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
             .forEach { hook in
                 switch hook {
                 case .boolean(let booleanHook):
@@ -72,7 +72,7 @@ class HookSupport {
         hints: [String: Any]
     ) throws {
         hooks
-            .filter { hook in hook.suppoprtsFlagValueType(flagValueType: flagValueType) }
+            .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
             .forEach { hook in
                 switch hook {
                 case .boolean(let booleanHook):
@@ -115,7 +115,7 @@ class HookSupport {
         let result =
             hooks
             .reversed()
-            .filter { hook in hook.suppoprtsFlagValueType(flagValueType: flagValueType) }
+            .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
             .compactMap { hook in
                 switch hook {
                 case .boolean(let booleanHook):
