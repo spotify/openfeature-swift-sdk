@@ -9,24 +9,15 @@ public class OpenFeatureAPI {
     private let hookQueue = DispatchQueue(label: "dev.openfeature.api.hook")
 
     private var _provider: FeatureProvider?
-    public var provider: FeatureProvider? {
-        get {
-            return self._provider
-        }
-        set {
-            self.providerQueue.sync {
-                self._provider = newValue
-            }
-        }
-    }
 
-    private var _evaluationContext: EvaluationContext?
-    public var evaluationContext: EvaluationContext? {
+    private var _evaluationContext: EvaluationContext = MutableContext()
+    public var evaluationContext: EvaluationContext {
         get {
             return self._evaluationContext
         }
         set {
             self.contextQueue.sync {
+                getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: newValue)
                 self._evaluationContext = newValue
             }
         }
@@ -40,8 +31,35 @@ public class OpenFeatureAPI {
     public init() {
     }
 
+    public func getProvider() -> FeatureProvider? {
+        return self._provider
+    }
+
+    public func setProvider(provider: FeatureProvider) {
+        self.setProvider(provider: provider, initialContext: nil)
+    }
+
+    public func setProvider(provider: FeatureProvider, initialContext: EvaluationContext?) {
+        self.contextQueue.sync {
+            guard let newEvaluationContext = initialContext else {
+                return
+            }
+            self._evaluationContext = newEvaluationContext
+        }
+        self.providerQueue.sync {
+            self._provider = provider
+            self._provider?.initialize(initialContext: initialContext ?? self._evaluationContext)
+        }
+    }
+
+    public func clearProvider() {
+        self.providerQueue.sync {
+            self._provider = nil
+        }
+    }
+
     public func getProviderMetadata() -> Metadata? {
-        return self.provider?.metadata
+        return self.getProvider()?.metadata
     }
 
     public func getClient() -> Client {

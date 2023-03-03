@@ -4,16 +4,12 @@ public protocol Features {
     // MARK: Bool
     func getBooleanValue(key: String, defaultValue: Bool) -> Bool
 
-    func getBooleanValue(key: String, defaultValue: Bool, ctx: EvaluationContext?) -> Bool
-
-    func getBooleanValue(key: String, defaultValue: Bool, ctx: EvaluationContext?, options: FlagEvaluationOptions)
+    func getBooleanValue(key: String, defaultValue: Bool, options: FlagEvaluationOptions)
         -> Bool
 
     func getBooleanDetails(key: String, defaultValue: Bool) -> FlagEvaluationDetails<Bool>
 
-    func getBooleanDetails(key: String, defaultValue: Bool, ctx: EvaluationContext?) -> FlagEvaluationDetails<Bool>
-
-    func getBooleanDetails(key: String, defaultValue: Bool, ctx: EvaluationContext?, options: FlagEvaluationOptions)
+    func getBooleanDetails(key: String, defaultValue: Bool, options: FlagEvaluationOptions)
         -> FlagEvaluationDetails<Bool>
 
     // MARK: String

@@ -55,35 +55,25 @@ extension OpenFeatureClient {
         return getBooleanDetails(key: key, defaultValue: defaultValue).value
     }
 
-    public func getBooleanValue(key: String, defaultValue: Bool, ctx: EvaluationContext?) -> Bool {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, ctx: ctx).value
-    }
-
     public func getBooleanValue(
-        key: String, defaultValue: Bool, ctx: EvaluationContext?, options: FlagEvaluationOptions
+        key: String, defaultValue: Bool, options: FlagEvaluationOptions
     )
         -> Bool
     {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, ctx: ctx, options: options).value
+        return getBooleanDetails(key: key, defaultValue: defaultValue, options: options).value
     }
 
     public func getBooleanDetails(key: String, defaultValue: Bool) -> FlagEvaluationDetails<Bool> {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, ctx: nil)
-    }
-
-    public func getBooleanDetails(key: String, defaultValue: Bool, ctx: EvaluationContext?) -> FlagEvaluationDetails<
-        Bool
-    > {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, ctx: ctx, options: FlagEvaluationOptions())
+        return getBooleanDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
     }
 
     public func getBooleanDetails(
-        key: String, defaultValue: Bool, ctx: EvaluationContext?, options: FlagEvaluationOptions
+        key: String, defaultValue: Bool, options: FlagEvaluationOptions
     )
         -> FlagEvaluationDetails<Bool>
     {
         return evaluateFlag(
-            flagValueType: .boolean, key: key, defaultValue: defaultValue, ctx: ctx, options: options
+            flagValueType: .boolean, key: key, defaultValue: defaultValue, ctx: nil, options: options
         )
     }
 }
@@ -260,7 +250,7 @@ extension OpenFeatureClient {
 
         let ctx = ctx ?? MutableContext()
         var details = FlagEvaluationDetails(flagKey: key, value: defaultValue)
-        let provider = openFeatureApi.provider ?? NoOpProvider()
+        let provider = openFeatureApi.getProvider() ?? NoOpProvider()
         let mergedHooks = provider.hooks + options.hooks + hooks + openFeatureApi.hooks
         let hookCtx = HookContext(
             flagKey: key,
@@ -271,7 +261,7 @@ extension OpenFeatureClient {
             providerMetadata: provider.metadata)
 
         do {
-            let apiContext = openFeatureApi.evaluationContext ?? MutableContext()
+            let apiContext = openFeatureApi.evaluationContext
             let clientContext = self.evaluationContext ?? MutableContext()
 
             let ctxFromHook = hookSupport.beforeHooks(
@@ -329,8 +319,7 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getBooleanEvaluation(
                 key: key,
-                defaultValue: defaultValue,
-                ctx: invocationContext) as? ProviderEvaluation<V>
+                defaultValue: defaultValue) as? ProviderEvaluation<V>
             {
                 return evaluation
             }

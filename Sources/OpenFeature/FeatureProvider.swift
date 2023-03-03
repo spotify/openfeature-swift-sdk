@@ -5,7 +5,14 @@ public protocol FeatureProvider {
     var hooks: [AnyHook] { get }
     var metadata: Metadata { get }
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    // Called by OpenFeatureAPI whenever the new Provider is registered
+    func initialize(initialContext: EvaluationContext)
+
+    // Called by OpenFeatureAPI whenever a new EvaluationContext is set by the application
+    // TODO Should this be Async?
+    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext)
+
+    func getBooleanEvaluation(key: String, defaultValue: Bool) throws -> ProviderEvaluation<
         Bool
     >
     func getStringEvaluation(key: String, defaultValue: String, ctx: EvaluationContext) throws -> ProviderEvaluation<

@@ -7,7 +7,7 @@ final class ProviderSpecTests: XCTestCase {
     func testFlagValueSet() throws {
         let provider = NoOpProvider()
 
-        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false, ctx: MutableContext())
+        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertNotNil(boolResult.value)
 
         let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test", ctx: MutableContext())
@@ -26,21 +26,21 @@ final class ProviderSpecTests: XCTestCase {
     func testHasReason() throws {
         let provider = NoOpProvider()
 
-        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false, ctx: MutableContext())
+        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertEqual(boolResult.reason, Reason.defaultReason.rawValue)
     }
 
     func testNoErrorCodeByDefault() throws {
         let provider = NoOpProvider()
 
-        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false, ctx: MutableContext())
+        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertNil(boolResult.errorCode)
     }
 
     func testVariantIsSet() throws {
         let provider = NoOpProvider()
 
-        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false, ctx: MutableContext())
+        let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertNotNil(boolResult.variant)
 
         let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test", ctx: MutableContext())

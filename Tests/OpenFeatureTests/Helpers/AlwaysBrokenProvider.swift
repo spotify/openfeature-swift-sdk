@@ -6,7 +6,15 @@ class AlwaysBrokenProvider: FeatureProvider {
     var metadata: Metadata = AlwaysBrokenMetadata()
     var hooks: [AnyHook] = []
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool, ctx: OpenFeature.EvaluationContext) throws
+    func onContextSet(oldContext: OpenFeature.EvaluationContext, newContext: OpenFeature.EvaluationContext) {
+        // no-op
+    }
+
+    func initialize(initialContext: OpenFeature.EvaluationContext) {
+        // no-op
+    }
+
+    func getBooleanEvaluation(key: String, defaultValue: Bool) throws
         -> OpenFeature.ProviderEvaluation<Bool>
     {
         throw OpenFeatureError.flagNotFoundError(key: key)

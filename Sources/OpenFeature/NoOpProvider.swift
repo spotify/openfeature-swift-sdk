@@ -6,7 +6,15 @@ class NoOpProvider: FeatureProvider {
     var metadata: Metadata = NoOpMetadata(name: "No-op provider")
     var hooks: [AnyHook] = []
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext) {
+        // no-op
+    }
+
+    func initialize(initialContext: EvaluationContext) {
+        // no-op
+    }
+
+    func getBooleanEvaluation(key: String, defaultValue: Bool) throws -> ProviderEvaluation<
         Bool
     > {
         return ProviderEvaluation(

@@ -10,13 +10,14 @@ final class FlagEvaluationTests: XCTestCase {
 
     func testApiSetsProvider() {
         let provider = NoOpProvider()
-        OpenFeatureAPI.shared.provider = provider
+        OpenFeatureAPI.shared.setProvider(provider: provider)
 
-        XCTAssertTrue((OpenFeatureAPI.shared.provider as? NoOpProvider) === provider)
+        XCTAssertTrue((OpenFeatureAPI.shared.getProvider() as? NoOpProvider) === provider)
     }
 
     func testProviderMetadata() {
-        OpenFeatureAPI.shared.provider = DoSomethingProvider()
+        OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
+
 
         XCTAssertEqual(OpenFeatureAPI.shared.getProviderMetadata()?.name, DoSomethingProvider.name)
     }
@@ -52,15 +53,15 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testSimpleFlagEvaluation() {
-        OpenFeatureAPI.shared.provider = DoSomethingProvider()
+        OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
         let client = OpenFeatureAPI.shared.getClient()
         let key = "key"
 
         XCTAssertEqual(client.getBooleanValue(key: key, defaultValue: false), true)
-        XCTAssertEqual(client.getBooleanValue(key: key, defaultValue: false, ctx: MutableContext()), true)
+        XCTAssertEqual(client.getBooleanValue(key: key, defaultValue: false), true)
         XCTAssertEqual(
             client.getBooleanValue(
-                key: key, defaultValue: false, ctx: MutableContext(), options: FlagEvaluationOptions()), true)
+                key: key, defaultValue: false, options: FlagEvaluationOptions()), true)
 
         XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test"), "tset")
         XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test", ctx: MutableContext()), "tset")
@@ -89,16 +90,16 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testDetailedFlagEvaluation() {
-        OpenFeatureAPI.shared.provider = DoSomethingProvider()
+        OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
         let client = OpenFeatureAPI.shared.getClient()
         let key = "key"
 
         let booleanDetails = FlagEvaluationDetails(flagKey: key, value: true, variant: nil)
         XCTAssertEqual(client.getBooleanDetails(key: key, defaultValue: false), booleanDetails)
-        XCTAssertEqual(client.getBooleanDetails(key: key, defaultValue: false, ctx: MutableContext()), booleanDetails)
+        XCTAssertEqual(client.getBooleanDetails(key: key, defaultValue: false), booleanDetails)
         XCTAssertEqual(
             client.getBooleanDetails(
-                key: key, defaultValue: false, ctx: MutableContext(), options: FlagEvaluationOptions()), booleanDetails)
+                key: key, defaultValue: false, options: FlagEvaluationOptions()), booleanDetails)
 
         let stringDetails = FlagEvaluationDetails(flagKey: key, value: "tset", variant: nil)
         XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test"), stringDetails)
@@ -132,7 +133,7 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testHooksAreFired() {
-        OpenFeatureAPI.shared.provider = NoOpProvider()
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let clientHook = BooleanHookMock()
@@ -142,7 +143,6 @@ final class FlagEvaluationTests: XCTestCase {
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            ctx: MutableContext(),
             options: FlagEvaluationOptions(hooks: [.boolean(invocationHook)]))
 
         XCTAssertEqual(clientHook.beforeCalled, 1)
@@ -150,7 +150,7 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testBrokenProvider() {
-        OpenFeatureAPI.shared.provider = AlwaysBrokenProvider()
+        OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         XCTAssertFalse(client.getBooleanValue(key: "testkey", defaultValue: false))
@@ -167,36 +167,5 @@ final class FlagEvaluationTests: XCTestCase {
 
         let client = OpenFeatureAPI.shared.getClient(name: "test", version: nil)
         XCTAssertEqual(client.metadata.name, "test")
-    }
-
-    func testMultilayerContextMergesCorrectly() {
-        let provider = DoSomethingProvider()
-        OpenFeatureAPI.shared.provider = provider
-
-        let apiCtx = MutableContext()
-        apiCtx.add(key: "common", value: .string("1"))
-        apiCtx.add(key: "common2", value: .string("1"))
-        apiCtx.add(key: "api", value: .string("2"))
-        OpenFeatureAPI.shared.evaluationContext = apiCtx
-
-        var client = OpenFeatureAPI.shared.getClient()
-        let clientCtx = MutableContext()
-        clientCtx.add(key: "common", value: .string("3"))
-        clientCtx.add(key: "common2", value: .string("3"))
-        clientCtx.add(key: "client", value: .string("4"))
-        client.evaluationContext = clientCtx
-
-        let invocationCtx = MutableContext()
-        invocationCtx.add(key: "common", value: .string("5"))
-        invocationCtx.add(key: "invocation", value: .string("6"))
-
-        _ = client.getBooleanValue(key: "key", defaultValue: false, ctx: invocationCtx)
-
-        let merged = provider.mergedContext
-        XCTAssertEqual(merged?.getValue(key: "invocation")?.asString(), "6")
-        XCTAssertEqual(merged?.getValue(key: "common")?.asString(), "5")
-        XCTAssertEqual(merged?.getValue(key: "client")?.asString(), "4")
-        XCTAssertEqual(merged?.getValue(key: "common2")?.asString(), "3")
-        XCTAssertEqual(merged?.getValue(key: "api")?.asString(), "2")
     }
 }
