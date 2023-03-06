@@ -12,6 +12,7 @@ final class HookSupportTests: XCTestCase {
             flagKey: "flagKey",
             type: .boolean,
             defaultValue: false,
+            ctx: MutableContext(),
             clientMetadata: metadata,
             providerMetadata: NoOpProvider().metadata)
 

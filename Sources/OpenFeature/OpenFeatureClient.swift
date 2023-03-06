@@ -194,6 +194,7 @@ extension OpenFeatureClient {
     ) -> FlagEvaluationDetails<T> {
         let options = options ?? FlagEvaluationOptions(hooks: [], hookHints: [:])
         let hints = options.hookHints
+        let context = openFeatureApi.evaluationContext
 
         var details = FlagEvaluationDetails(flagKey: key, value: defaultValue)
         let provider = openFeatureApi.getProvider() ?? NoOpProvider()
@@ -202,6 +203,7 @@ extension OpenFeatureClient {
             flagKey: key,
             type: flagValueType,
             defaultValue: defaultValue,
+            ctx: context,
             clientMetadata: self.metadata,
             providerMetadata: provider.metadata)
 
@@ -213,7 +215,7 @@ extension OpenFeatureClient {
                 key: key,
                 defaultValue: defaultValue,
                 provider: provider,
-                invocationContext: openFeatureApi.evaluationContext)
+                invocationContext: context)
 
             let evalDetails = FlagEvaluationDetails<T>.from(providerEval: providerEval, flagKey: key)
             details = evalDetails
