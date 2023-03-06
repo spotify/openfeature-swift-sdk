@@ -4,8 +4,7 @@ import Foundation
 /// Configuration here will be shared across all ``Client``s.
 public class OpenFeatureAPI {
     // TODO: We use DispatchQueue here instead of being an actor to not lock into new versions of Swift
-    private let contextQueue = DispatchQueue(label: "dev.openfeature.api.context")
-    private let providerQueue = DispatchQueue(label: "dev.openfeature.api.provider")
+    private let apiPropertiesQueue = DispatchQueue(label: "dev.openfeature.api")
     private let hookQueue = DispatchQueue(label: "dev.openfeature.api.hook")
 
     private var _provider: FeatureProvider?
@@ -28,20 +27,18 @@ public class OpenFeatureAPI {
     }
 
     public func setProvider(provider: FeatureProvider, initialContext: EvaluationContext?) {
-        self.contextQueue.sync {
+        self.apiPropertiesQueue.sync {
+            provider.initialize(initialContext: initialContext ?? self._evaluationContext)
+            self._provider = provider
             guard let newEvaluationContext = initialContext else {
                 return
             }
             self._evaluationContext = newEvaluationContext
         }
-        self.providerQueue.sync {
-            self._provider = provider
-            self._provider?.initialize(initialContext: initialContext ?? self._evaluationContext)
-        }
     }
 
     public func setEvaluationContext(evaluationContext: EvaluationContext) {
-        self.contextQueue.sync {
+        self.apiPropertiesQueue.sync {
             getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
             self._evaluationContext = evaluationContext
         }
@@ -52,7 +49,7 @@ public class OpenFeatureAPI {
     }
 
     public func clearProvider() {
-        self.providerQueue.sync {
+        self.apiPropertiesQueue.sync {
             self._provider = nil
         }
     }

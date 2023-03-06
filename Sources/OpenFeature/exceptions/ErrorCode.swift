@@ -1,7 +1,7 @@
 import Foundation
 
 public enum ErrorCode: Int {
-    case providerNotReady = 1
+    case providerNotReady
     case flagNotFound
     case parseError
     case typeMismatch

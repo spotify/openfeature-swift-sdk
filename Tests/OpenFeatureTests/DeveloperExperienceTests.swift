@@ -20,7 +20,7 @@ final class DeveloperExperienceTests: XCTestCase {
     }
 
     func testClientHooks() {
-        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider(), initialContext: nil)
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let hook = BooleanHookMock()

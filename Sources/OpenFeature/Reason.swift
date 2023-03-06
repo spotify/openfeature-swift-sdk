@@ -11,6 +11,8 @@ public enum Reason: String {
     case defaultReason
     /// The reason for the resolved value could not be determined.
     case unknown
+    /// The resolved value is non-authoritative or possible out of date
+    case stale
     /// The resolved value was the result of an error.
     case error
 }
