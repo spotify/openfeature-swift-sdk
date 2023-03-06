@@ -21,25 +21,25 @@ class DoSomethingProvider: FeatureProvider {
         return ProviderEvaluation(value: !defaultValue)
     }
 
-    func getStringEvaluation(key: String, defaultValue: String, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    func getStringEvaluation(key: String, defaultValue: String) throws -> ProviderEvaluation<
         String
     > {
         return ProviderEvaluation(value: String(defaultValue.reversed()))
     }
 
-    func getIntegerEvaluation(key: String, defaultValue: Int64, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    func getIntegerEvaluation(key: String, defaultValue: Int64) throws -> ProviderEvaluation<
         Int64
     > {
         return ProviderEvaluation(value: defaultValue * 100)
     }
 
-    func getDoubleEvaluation(key: String, defaultValue: Double, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    func getDoubleEvaluation(key: String, defaultValue: Double) throws -> ProviderEvaluation<
         Double
     > {
         return ProviderEvaluation(value: defaultValue * 100)
     }
 
-    func getObjectEvaluation(key: String, defaultValue: Value, ctx: EvaluationContext) throws -> ProviderEvaluation<
+    func getObjectEvaluation(key: String, defaultValue: Value) throws -> ProviderEvaluation<
         Value
     > {
         return ProviderEvaluation(value: .null)

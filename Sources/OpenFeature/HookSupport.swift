@@ -101,7 +101,7 @@ class HookSupport {
                     }
                 case .object(let objectHook):
                     if let objectCtx = hookCtx as? HookContext<Value>,
-                        let objectDetails = details as? FlagEvaluationDetails<Value>
+                       let objectDetails = details as? FlagEvaluationDetails<Value>
                     {
                         objectHook.after(ctx: objectCtx, details: objectDetails, hints: hints)
                     }
@@ -110,42 +110,33 @@ class HookSupport {
     }
 
     func beforeHooks<T>(flagValueType: FlagValueType, hookCtx: HookContext<T>, hooks: [AnyHook], hints: [String: Any])
-        -> EvaluationContext
     {
-        let result =
-            hooks
+        hooks
             .reversed()
             .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
-            .compactMap { hook in
+            .forEach { hook in
                 switch hook {
                 case .boolean(let booleanHook):
                     if let booleanCtx = hookCtx as? HookContext<Bool> {
-                        return booleanHook.before(ctx: booleanCtx, hints: hints)
+                        booleanHook.before(ctx: booleanCtx, hints: hints)
                     }
                 case .integer(let integerHook):
                     if let integerCtx = hookCtx as? HookContext<Int64> {
-                        return integerHook.before(ctx: integerCtx, hints: hints)
+                        integerHook.before(ctx: integerCtx, hints: hints)
                     }
                 case .double(let doubleHook):
                     if let doubleCtx = hookCtx as? HookContext<Double> {
-                        return doubleHook.before(ctx: doubleCtx, hints: hints)
+                        doubleHook.before(ctx: doubleCtx, hints: hints)
                     }
                 case .string(let stringHook):
                     if let stringCtx = hookCtx as? HookContext<String> {
-                        return stringHook.before(ctx: stringCtx, hints: hints)
+                        stringHook.before(ctx: stringCtx, hints: hints)
                     }
                 case .object(let objectHook):
                     if let objectCtx = hookCtx as? HookContext<Value> {
-                        return objectHook.before(ctx: objectCtx, hints: hints)
+                        objectHook.before(ctx: objectCtx, hints: hints)
                     }
                 }
-
-                return nil
             }
-
-        return hookCtx.ctx.merge(
-            overridingContext: result.reduce(hookCtx.ctx) { acc, cur in
-                acc.merge(overridingContext: cur)
-            })
     }
 }

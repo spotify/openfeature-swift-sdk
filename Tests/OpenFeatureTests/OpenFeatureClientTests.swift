@@ -48,25 +48,25 @@ extension OpenFeatureClientTests {
 
         }
 
-        func getStringEvaluation(key: String, defaultValue: String, ctx: OpenFeature.EvaluationContext) throws
+        func getStringEvaluation(key: String, defaultValue: String) throws
             -> OpenFeature.ProviderEvaluation<String>
         {
             return ProviderEvaluation(value: "")
         }
 
-        func getIntegerEvaluation(key: String, defaultValue: Int64, ctx: OpenFeature.EvaluationContext) throws
+        func getIntegerEvaluation(key: String, defaultValue: Int64) throws
             -> OpenFeature.ProviderEvaluation<Int64>
         {
             return ProviderEvaluation(value: 0)
         }
 
-        func getDoubleEvaluation(key: String, defaultValue: Double, ctx: OpenFeature.EvaluationContext) throws
+        func getDoubleEvaluation(key: String, defaultValue: Double) throws
             -> OpenFeature.ProviderEvaluation<Double>
         {
             return ProviderEvaluation(value: 0.0)
         }
 
-        func getObjectEvaluation(key: String, defaultValue: OpenFeature.Value, ctx: OpenFeature.EvaluationContext)
+        func getObjectEvaluation(key: String, defaultValue: OpenFeature.Value)
             throws -> OpenFeature.ProviderEvaluation<OpenFeature.Value>
         {
             return ProviderEvaluation(value: .null)

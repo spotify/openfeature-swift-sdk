@@ -64,28 +64,28 @@ final class FlagEvaluationTests: XCTestCase {
                 key: key, defaultValue: false, options: FlagEvaluationOptions()), true)
 
         XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test"), "tset")
-        XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test", ctx: MutableContext()), "tset")
+        XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test"), "tset")
         XCTAssertEqual(
             client.getStringValue(
-                key: key, defaultValue: "test", ctx: MutableContext(), options: FlagEvaluationOptions()), "tset")
+                key: key, defaultValue: "test", options: FlagEvaluationOptions()), "tset")
 
         XCTAssertEqual(client.getIntegerValue(key: key, defaultValue: 4), 400)
-        XCTAssertEqual(client.getIntegerValue(key: key, defaultValue: 4, ctx: MutableContext()), 400)
+        XCTAssertEqual(client.getIntegerValue(key: key, defaultValue: 4), 400)
         XCTAssertEqual(
-            client.getIntegerValue(key: key, defaultValue: 4, ctx: MutableContext(), options: FlagEvaluationOptions()),
+            client.getIntegerValue(key: key, defaultValue: 4, options: FlagEvaluationOptions()),
             400)
 
         XCTAssertEqual(client.getDoubleValue(key: key, defaultValue: 0.4), 40.0)
-        XCTAssertEqual(client.getDoubleValue(key: key, defaultValue: 0.4, ctx: MutableContext()), 40.0)
+        XCTAssertEqual(client.getDoubleValue(key: key, defaultValue: 0.4), 40.0)
         XCTAssertEqual(
-            client.getDoubleValue(key: key, defaultValue: 0.4, ctx: MutableContext(), options: FlagEvaluationOptions()),
+            client.getDoubleValue(key: key, defaultValue: 0.4, options: FlagEvaluationOptions()),
             40.0)
 
         XCTAssertEqual(client.getObjectValue(key: key, defaultValue: .structure([:])), .null)
-        XCTAssertEqual(client.getObjectValue(key: key, defaultValue: .structure([:]), ctx: MutableContext()), .null)
+        XCTAssertEqual(client.getObjectValue(key: key, defaultValue: .structure([:])), .null)
         XCTAssertEqual(
             client.getObjectValue(
-                key: key, defaultValue: .structure([:]), ctx: MutableContext(), options: FlagEvaluationOptions()), .null
+                key: key, defaultValue: .structure([:]), options: FlagEvaluationOptions()), .null
         )
     }
 
@@ -103,32 +103,32 @@ final class FlagEvaluationTests: XCTestCase {
 
         let stringDetails = FlagEvaluationDetails(flagKey: key, value: "tset", variant: nil)
         XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test"), stringDetails)
-        XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test", ctx: MutableContext()), stringDetails)
+        XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test"), stringDetails)
         XCTAssertEqual(
             client.getStringDetails(
-                key: key, defaultValue: "test", ctx: MutableContext(), options: FlagEvaluationOptions()), stringDetails)
+                key: key, defaultValue: "test", options: FlagEvaluationOptions()), stringDetails)
 
         let integerDetails = FlagEvaluationDetails(flagKey: key, value: Int64(400), variant: nil)
         XCTAssertEqual(client.getIntegerDetails(key: key, defaultValue: 4), integerDetails)
-        XCTAssertEqual(client.getIntegerDetails(key: key, defaultValue: 4, ctx: MutableContext()), integerDetails)
+        XCTAssertEqual(client.getIntegerDetails(key: key, defaultValue: 4), integerDetails)
         XCTAssertEqual(
             client.getIntegerDetails(
-                key: key, defaultValue: 4, ctx: MutableContext(), options: FlagEvaluationOptions()), integerDetails)
+                key: key, defaultValue: 4, options: FlagEvaluationOptions()), integerDetails)
 
         let doubleDetails = FlagEvaluationDetails(flagKey: key, value: 40.0, variant: nil)
         XCTAssertEqual(client.getDoubleDetails(key: key, defaultValue: 0.4), doubleDetails)
-        XCTAssertEqual(client.getDoubleDetails(key: key, defaultValue: 0.4, ctx: MutableContext()), doubleDetails)
+        XCTAssertEqual(client.getDoubleDetails(key: key, defaultValue: 0.4), doubleDetails)
         XCTAssertEqual(
             client.getDoubleDetails(
-                key: key, defaultValue: 0.4, ctx: MutableContext(), options: FlagEvaluationOptions()), doubleDetails)
+                key: key, defaultValue: 0.4, options: FlagEvaluationOptions()), doubleDetails)
 
         let objectDetails = FlagEvaluationDetails(flagKey: key, value: Value.null, variant: nil)
         XCTAssertEqual(client.getObjectDetails(key: key, defaultValue: .structure([:])), objectDetails)
         XCTAssertEqual(
-            client.getObjectDetails(key: key, defaultValue: .structure([:]), ctx: MutableContext()), objectDetails)
+            client.getObjectDetails(key: key, defaultValue: .structure([:])), objectDetails)
         XCTAssertEqual(
             client.getObjectDetails(
-                key: key, defaultValue: .structure([:]), ctx: MutableContext(), options: FlagEvaluationOptions()),
+                key: key, defaultValue: .structure([:]), options: FlagEvaluationOptions()),
             objectDetails)
     }
 

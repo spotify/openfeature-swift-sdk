@@ -10,16 +10,16 @@ final class ProviderSpecTests: XCTestCase {
         let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertNotNil(boolResult.value)
 
-        let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test", ctx: MutableContext())
+        let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test")
         XCTAssertNotNil(stringResult.value)
 
-        let intResult = try provider.getIntegerEvaluation(key: "key", defaultValue: 4, ctx: MutableContext())
+        let intResult = try provider.getIntegerEvaluation(key: "key", defaultValue: 4)
         XCTAssertNotNil(intResult.value)
 
-        let doubleResult = try provider.getDoubleEvaluation(key: "key", defaultValue: 0.4, ctx: MutableContext())
+        let doubleResult = try provider.getDoubleEvaluation(key: "key", defaultValue: 0.4)
         XCTAssertNotNil(doubleResult.value)
 
-        let objectResult = try provider.getObjectEvaluation(key: "key", defaultValue: .null, ctx: MutableContext())
+        let objectResult = try provider.getObjectEvaluation(key: "key", defaultValue: .null)
         XCTAssertNotNil(objectResult.value)
     }
 
@@ -43,16 +43,16 @@ final class ProviderSpecTests: XCTestCase {
         let boolResult = try provider.getBooleanEvaluation(key: "key", defaultValue: false)
         XCTAssertNotNil(boolResult.variant)
 
-        let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test", ctx: MutableContext())
+        let stringResult = try provider.getStringEvaluation(key: "key", defaultValue: "test")
         XCTAssertNotNil(stringResult.variant)
 
-        let intResult = try provider.getIntegerEvaluation(key: "key", defaultValue: 4, ctx: MutableContext())
+        let intResult = try provider.getIntegerEvaluation(key: "key", defaultValue: 4)
         XCTAssertNotNil(intResult.variant)
 
-        let doubleResult = try provider.getDoubleEvaluation(key: "key", defaultValue: 0.4, ctx: MutableContext())
+        let doubleResult = try provider.getDoubleEvaluation(key: "key", defaultValue: 0.4)
         XCTAssertNotNil(doubleResult.variant)
 
-        let objectResult = try provider.getObjectEvaluation(key: "key", defaultValue: .null, ctx: MutableContext())
+        let objectResult = try provider.getObjectEvaluation(key: "key", defaultValue: .null)
         XCTAssertNotNil(objectResult.variant)
     }
 }
