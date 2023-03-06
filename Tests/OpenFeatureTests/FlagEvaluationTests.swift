@@ -18,7 +18,6 @@ final class FlagEvaluationTests: XCTestCase {
     func testProviderMetadata() {
         OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
 
-
         XCTAssertEqual(OpenFeatureAPI.shared.getProviderMetadata()?.name, DoSomethingProvider.name)
     }
 

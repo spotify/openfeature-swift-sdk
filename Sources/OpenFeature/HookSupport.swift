@@ -101,7 +101,7 @@ class HookSupport {
                     }
                 case .object(let objectHook):
                     if let objectCtx = hookCtx as? HookContext<Value>,
-                       let objectDetails = details as? FlagEvaluationDetails<Value>
+                        let objectDetails = details as? FlagEvaluationDetails<Value>
                     {
                         objectHook.after(ctx: objectCtx, details: objectDetails, hints: hints)
                     }
@@ -109,8 +109,7 @@ class HookSupport {
             }
     }
 
-    func beforeHooks<T>(flagValueType: FlagValueType, hookCtx: HookContext<T>, hooks: [AnyHook], hints: [String: Any])
-    {
+    func beforeHooks<T>(flagValueType: FlagValueType, hookCtx: HookContext<T>, hooks: [AnyHook], hints: [String: Any]) {
         hooks
             .reversed()
             .filter { hook in hook.supportsFlagValueType(flagValueType: flagValueType) }
