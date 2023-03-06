@@ -259,6 +259,9 @@ extension OpenFeatureClient {
         let hints = options.hookHints
 
         let ctx = ctx ?? MutableContext()
+        let apiContext = openFeatureApi.evaluationContext ?? MutableContext()
+        let clientContext = self.evaluationContext ?? MutableContext()
+        var mergedCtx = apiContext.merge(overridingContext: clientContext.merge(overridingContext: ctx))
         var details = FlagEvaluationDetails(flagKey: key, value: defaultValue)
         let provider = openFeatureApi.provider ?? NoOpProvider()
         let mergedHooks = provider.hooks + options.hooks + hooks + openFeatureApi.hooks
@@ -266,18 +269,14 @@ extension OpenFeatureClient {
             flagKey: key,
             type: flagValueType,
             defaultValue: defaultValue,
-            ctx: ctx,
+            ctx: mergedCtx,
             clientMetadata: self.metadata,
             providerMetadata: provider.metadata)
 
         do {
-            let apiContext = openFeatureApi.evaluationContext ?? MutableContext()
-            let clientContext = self.evaluationContext ?? MutableContext()
-
             let ctxFromHook = hookSupport.beforeHooks(
                 flagValueType: flagValueType, hookCtx: hookCtx, hooks: mergedHooks, hints: hints)
-            let invocationCtx = ctx.merge(overridingContext: ctxFromHook)
-            let mergedCtx = apiContext.merge(overridingContext: clientContext.merge(overridingContext: invocationCtx))
+            mergedCtx = mergedCtx.merge(overridingContext: ctxFromHook)
 
             let providerEval = try createProviderEvaluation(
                 flagValueType: flagValueType,
