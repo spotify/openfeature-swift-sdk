@@ -194,7 +194,7 @@ extension OpenFeatureClient {
     ) -> FlagEvaluationDetails<T> {
         let options = options ?? FlagEvaluationOptions(hooks: [], hookHints: [:])
         let hints = options.hookHints
-        let context = openFeatureApi.evaluationContext
+        let context = openFeatureApi.getEvaluationContext() ?? MutableContext()
 
         var details = FlagEvaluationDetails(flagKey: key, value: defaultValue)
         let provider = openFeatureApi.getProvider() ?? NoOpProvider()

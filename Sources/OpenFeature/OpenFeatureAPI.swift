@@ -9,19 +9,7 @@ public class OpenFeatureAPI {
     private let hookQueue = DispatchQueue(label: "dev.openfeature.api.hook")
 
     private var _provider: FeatureProvider?
-
     private var _evaluationContext: EvaluationContext = MutableContext()
-    public var evaluationContext: EvaluationContext {
-        get {
-            return self._evaluationContext
-        }
-        set {
-            self.contextQueue.sync {
-                getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: newValue)
-                self._evaluationContext = newValue
-            }
-        }
-    }
 
     private(set) var hooks: [AnyHook] = []
 
@@ -50,6 +38,17 @@ public class OpenFeatureAPI {
             self._provider = provider
             self._provider?.initialize(initialContext: initialContext ?? self._evaluationContext)
         }
+    }
+
+    public func setEvaluationContext(evaluationContext: EvaluationContext) {
+        self.contextQueue.sync {
+            getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
+            self._evaluationContext = evaluationContext
+        }
+    }
+
+    public func getEvaluationContext() -> EvaluationContext? {
+        return self._evaluationContext
     }
 
     public func clearProvider() {
