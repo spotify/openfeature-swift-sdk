@@ -18,10 +18,6 @@ public class OpenFeatureAPI {
     public init() {
     }
 
-    public func getProvider() -> FeatureProvider? {
-        return self._provider
-    }
-
     public func setProvider(provider: FeatureProvider) async {
         await self.setProvider(provider: provider, initialContext: nil)
     }
@@ -37,6 +33,17 @@ public class OpenFeatureAPI {
         }
     }
 
+    public func getProvider() -> FeatureProvider? {
+        return self._provider
+    }
+
+    public func clearProvider() {
+        self.apiPropertiesQueue.sync {
+            // TODO Should we clear the cache as well?
+            self._provider = nil
+        }
+    }
+
     public func setEvaluationContext(evaluationContext: EvaluationContext) async {
         await getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
         self.apiPropertiesQueue.sync {
@@ -46,12 +53,6 @@ public class OpenFeatureAPI {
 
     public func getEvaluationContext() -> EvaluationContext? {
         return self._evaluationContext
-    }
-
-    public func clearProvider() {
-        self.apiPropertiesQueue.sync {
-            self._provider = nil
-        }
     }
 
     public func getProviderMetadata() -> Metadata? {
