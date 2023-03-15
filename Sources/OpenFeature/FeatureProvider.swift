@@ -9,8 +9,7 @@ public protocol FeatureProvider {
     func initialize(initialContext: EvaluationContext) async
 
     // Called by OpenFeatureAPI whenever a new EvaluationContext is set by the application
-    // TODO Should this be Async?
-    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext)
+    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext) async
 
     func getBooleanEvaluation(key: String, defaultValue: Bool) throws -> ProviderEvaluation<
         Bool

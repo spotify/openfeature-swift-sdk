@@ -37,9 +37,9 @@ public class OpenFeatureAPI {
         }
     }
 
-    public func setEvaluationContext(evaluationContext: EvaluationContext) {
+    public func setEvaluationContext(evaluationContext: EvaluationContext) async {
+        await getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
         self.apiPropertiesQueue.sync {
-            getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
             self._evaluationContext = evaluationContext
         }
     }
