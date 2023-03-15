@@ -22,13 +22,13 @@ public class OpenFeatureAPI {
         return self._provider
     }
 
-    public func setProvider(provider: FeatureProvider) {
-        self.setProvider(provider: provider, initialContext: nil)
+    public func setProvider(provider: FeatureProvider) async {
+        await self.setProvider(provider: provider, initialContext: nil)
     }
 
-    public func setProvider(provider: FeatureProvider, initialContext: EvaluationContext?) {
+    public func setProvider(provider: FeatureProvider, initialContext: EvaluationContext?) async {
+        await provider.initialize(initialContext: initialContext ?? self._evaluationContext)
         self.apiPropertiesQueue.sync {
-            provider.initialize(initialContext: initialContext ?? self._evaluationContext)
             self._provider = provider
             guard let newEvaluationContext = initialContext else {
                 return

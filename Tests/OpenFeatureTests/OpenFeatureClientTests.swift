@@ -4,8 +4,8 @@ import XCTest
 @testable import OpenFeature
 
 final class OpenFeatureClientTests: XCTestCase {
-    func testShouldNowThrowIfHookHasDifferentTypeArgument() {
-        OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
+    func testShouldNowThrowIfHookHasDifferentTypeArgument() async {
+        await OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
         OpenFeatureAPI.shared.addHooks(hooks: .boolean(BooleanHookMock()))
 
         let client = OpenFeatureAPI.shared.getClient()

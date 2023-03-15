@@ -6,7 +6,7 @@ public protocol FeatureProvider {
     var metadata: Metadata { get }
 
     // Called by OpenFeatureAPI whenever the new Provider is registered
-    func initialize(initialContext: EvaluationContext)
+    func initialize(initialContext: EvaluationContext) async
 
     // Called by OpenFeatureAPI whenever a new EvaluationContext is set by the application
     // TODO Should this be Async?

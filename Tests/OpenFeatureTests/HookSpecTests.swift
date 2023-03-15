@@ -21,8 +21,8 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testErrorHookButNoAfterCalled() {
-        OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
+    func testErrorHookButNoAfterCalled() async {
+        await OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         let client = OpenFeatureAPI.shared.getClient()
         let hook = BooleanHookMock()
 
@@ -37,7 +37,7 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testHookEvaluationOrder() {
+    func testHookEvaluationOrder() async {
         var evalOrder: [String] = []
         let addEval: (String) -> Void = { eval in
             evalOrder.append(eval)
@@ -46,7 +46,7 @@ final class HookSpecTests: XCTestCase {
         let providerMock = NoOpProviderMock(hooks: [
             .boolean(BooleanHookMock(prefix: "provider", addEval: addEval))
         ])
-        OpenFeatureAPI.shared.setProvider(provider: providerMock)
+        await OpenFeatureAPI.shared.setProvider(provider: providerMock)
         OpenFeatureAPI.shared.addHooks(hooks: .boolean(BooleanHookMock(prefix: "api", addEval: addEval)))
         let client = OpenFeatureAPI.shared.getClient()
         client.addHooks(.boolean(BooleanHookMock(prefix: "client", addEval: addEval)))
