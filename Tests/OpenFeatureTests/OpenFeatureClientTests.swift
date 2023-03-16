@@ -4,8 +4,8 @@ import XCTest
 @testable import OpenFeature
 
 final class OpenFeatureClientTests: XCTestCase {
-    func testShouldNowThrowIfHookHasDifferentTypeArgument() {
-        OpenFeatureAPI.shared.provider = DoSomethingProvider()
+    func testShouldNowThrowIfHookHasDifferentTypeArgument() async {
+        await OpenFeatureAPI.shared.setProvider(provider: DoSomethingProvider())
         OpenFeatureAPI.shared.addHooks(hooks: .boolean(BooleanHookMock()))
 
         let client = OpenFeatureAPI.shared.getClient()
@@ -13,19 +13,6 @@ final class OpenFeatureClientTests: XCTestCase {
         let details = client.getStringDetails(key: "key", defaultValue: "test")
 
         XCTAssertEqual(details.value, "tset")
-    }
-
-    func testMergeContexts() {
-        let targetingKey = "targetingKey"
-        OpenFeatureAPI.shared.provider = TestProvider(targetingKey: targetingKey)
-        let ctx = MutableContext(targetingKey: targetingKey)
-
-        var client = OpenFeatureAPI.shared.getClient()
-        client.evaluationContext = ctx
-
-        let details = client.getBooleanDetails(key: "flag", defaultValue: false)
-
-        XCTAssertEqual(details.value, true)
     }
 }
 
@@ -39,43 +26,46 @@ extension OpenFeatureClientTests {
 
     class TestProvider: FeatureProvider {
         var hooks: [OpenFeature.AnyHook] = []
-
         var metadata: OpenFeature.Metadata = TestMetadata()
         private var targetingKey: String
+
+        func onContextSet(oldContext: OpenFeature.EvaluationContext, newContext: OpenFeature.EvaluationContext) {
+            // no-op
+        }
+
+        func initialize(initialContext: OpenFeature.EvaluationContext) {
+            // no-op
+        }
 
         init(targetingKey: String) {
             self.targetingKey = targetingKey
         }
 
-        func getBooleanEvaluation(key: String, defaultValue: Bool, ctx: OpenFeature.EvaluationContext) throws
+        func getBooleanEvaluation(key: String, defaultValue: Bool) throws
             -> OpenFeature.ProviderEvaluation<Bool>
         {
-            if ctx.getTargetingKey() == self.targetingKey {
-                return ProviderEvaluation(value: true)
-            } else {
-                return ProviderEvaluation(value: false)
-            }
+            return ProviderEvaluation(value: true)
         }
 
-        func getStringEvaluation(key: String, defaultValue: String, ctx: OpenFeature.EvaluationContext) throws
+        func getStringEvaluation(key: String, defaultValue: String) throws
             -> OpenFeature.ProviderEvaluation<String>
         {
             return ProviderEvaluation(value: "")
         }
 
-        func getIntegerEvaluation(key: String, defaultValue: Int64, ctx: OpenFeature.EvaluationContext) throws
+        func getIntegerEvaluation(key: String, defaultValue: Int64) throws
             -> OpenFeature.ProviderEvaluation<Int64>
         {
             return ProviderEvaluation(value: 0)
         }
 
-        func getDoubleEvaluation(key: String, defaultValue: Double, ctx: OpenFeature.EvaluationContext) throws
+        func getDoubleEvaluation(key: String, defaultValue: Double) throws
             -> OpenFeature.ProviderEvaluation<Double>
         {
             return ProviderEvaluation(value: 0.0)
         }
 
-        func getObjectEvaluation(key: String, defaultValue: OpenFeature.Value, ctx: OpenFeature.EvaluationContext)
+        func getObjectEvaluation(key: String, defaultValue: OpenFeature.Value)
             throws -> OpenFeature.ProviderEvaluation<OpenFeature.Value>
         {
             return ProviderEvaluation(value: .null)

@@ -21,20 +21,6 @@ public class MutableContext: EvaluationContext {
         self.targetingKey = targetingKey
     }
 
-    public func merge(overridingContext: EvaluationContext) -> EvaluationContext {
-        let merged = self.asMap().merging(overridingContext.asMap()) { _, new in new }
-        let mergedContext = MutableContext(attributes: merged)
-
-        if !self.targetingKey.isEmpty {
-            mergedContext.setTargetingKey(targetingKey: self.targetingKey)
-        }
-        if !overridingContext.getTargetingKey().trimmingCharacters(in: .whitespaces).isEmpty {
-            mergedContext.setTargetingKey(targetingKey: overridingContext.getTargetingKey())
-        }
-
-        return mergedContext
-    }
-
     public func keySet() -> Set<String> {
         return structure.keySet()
     }

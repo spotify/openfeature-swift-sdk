@@ -3,7 +3,7 @@ import Foundation
 public protocol Hook {
     associatedtype HookValue: Equatable
 
-    func before(ctx: HookContext<HookValue>, hints: [String: Any]) -> EvaluationContext?
+    func before(ctx: HookContext<HookValue>, hints: [String: Any])
 
     func after(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any])
 
@@ -15,8 +15,7 @@ public protocol Hook {
 }
 
 extension Hook {
-    func before(ctx: HookContext<HookValue>, hints: [String: Any]) -> EvaluationContext? {
-        return nil
+    func before(ctx: HookContext<HookValue>, hints: [String: Any]) {
     }
 
     func after(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any]) {

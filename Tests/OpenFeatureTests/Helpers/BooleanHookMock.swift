@@ -20,11 +20,9 @@ class BooleanHookMock: BooleanHook {
         self.addEval = addEval
     }
 
-    func before(ctx: HookContext<Bool>, hints: [String: Any]) -> EvaluationContext? {
+    func before(ctx: HookContext<Bool>, hints: [String: Any]) {
         beforeCalled += 1
         self.addEval(self.prefix.isEmpty ? "before" : "\(self.prefix) before")
-
-        return nil
     }
 
     func after(ctx: HookContext<Bool>, details: FlagEvaluationDetails<Bool>, hints: [String: Any]) {

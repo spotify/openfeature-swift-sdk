@@ -5,7 +5,7 @@ import XCTest
 
 final class HookSpecTests: XCTestCase {
     func testNoErrorHookCalled() {
-        OpenFeatureAPI.shared.provider = NoOpProvider()
+        OpenFeatureAPI.shared.clearProvider()
         let client = OpenFeatureAPI.shared.getClient()
 
         let hook = BooleanHookMock()
@@ -13,7 +13,6 @@ final class HookSpecTests: XCTestCase {
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            ctx: MutableContext(),
             options: FlagEvaluationOptions(hooks: [.boolean(hook)]))
 
         XCTAssertEqual(hook.beforeCalled, 1)
@@ -22,16 +21,14 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testErrorHookButNoAfterCalled() {
-        OpenFeatureAPI.shared.provider = AlwaysBrokenProvider()
+    func testErrorHookButNoAfterCalled() async {
+        await OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         let client = OpenFeatureAPI.shared.getClient()
-
         let hook = BooleanHookMock()
 
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            ctx: MutableContext(),
             options: FlagEvaluationOptions(hooks: [.boolean(hook)]))
 
         XCTAssertEqual(hook.beforeCalled, 1)
@@ -40,15 +37,16 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testHookEvaluationOrder() {
+    func testHookEvaluationOrder() async {
         var evalOrder: [String] = []
         let addEval: (String) -> Void = { eval in
             evalOrder.append(eval)
         }
 
-        OpenFeatureAPI.shared.provider = NoOpProviderMock(hooks: [
+        let providerMock = NoOpProviderMock(hooks: [
             .boolean(BooleanHookMock(prefix: "provider", addEval: addEval))
         ])
+        await OpenFeatureAPI.shared.setProvider(provider: providerMock)
         OpenFeatureAPI.shared.addHooks(hooks: .boolean(BooleanHookMock(prefix: "api", addEval: addEval)))
         let client = OpenFeatureAPI.shared.getClient()
         client.addHooks(.boolean(BooleanHookMock(prefix: "client", addEval: addEval)))
@@ -56,7 +54,7 @@ final class HookSpecTests: XCTestCase {
             .boolean(BooleanHookMock(prefix: "invocation", addEval: addEval))
         ])
 
-        _ = client.getBooleanValue(key: "key", defaultValue: false, ctx: MutableContext(), options: flagOptions)
+        _ = client.getBooleanValue(key: "key", defaultValue: false, options: flagOptions)
 
         XCTAssertEqual(
             evalOrder,

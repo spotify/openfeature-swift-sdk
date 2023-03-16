@@ -4,9 +4,6 @@ import Foundation
 public protocol Client: Features {
     var metadata: Metadata { get }
 
-    /// Return an optional client-level evaluation context.
-    var evaluationContext: EvaluationContext? { get set }
-
     /// The hooks associated to this client.
     var hooks: [AnyHook] { get }
 

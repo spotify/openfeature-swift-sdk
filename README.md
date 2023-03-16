@@ -26,7 +26,7 @@ To enable the provider and start resolving flags add the following:
 import OpenFeature
 
 // Change this to your actual provider
-OpenFeatureAPI.shared.provider = NoOpProvider()
+OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
 
 let client = OpenFeatureAPI.shared.getClient()
 let value = client.getBooleanValue(key: "flag", defaultValue: false)

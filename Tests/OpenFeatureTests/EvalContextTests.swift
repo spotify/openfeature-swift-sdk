@@ -112,24 +112,6 @@ final class EvalContextTests: XCTestCase {
         XCTAssertNil(ctx.getValue(key: "null")?.asString())
     }
 
-    func testContextCanMergeTargetingKey() {
-        let key1 = "key1"
-        let ctx1 = MutableContext(targetingKey: key1)
-        let ctx2 = MutableContext()
-
-        let merged = ctx1.merge(overridingContext: ctx2)
-        XCTAssertEqual(merged.getTargetingKey(), key1)
-
-        let key2 = "key2"
-        ctx2.setTargetingKey(targetingKey: "key2")
-        let merged2 = ctx1.merge(overridingContext: ctx2)
-        XCTAssertEqual(merged2.getTargetingKey(), key2)
-
-        ctx2.setTargetingKey(targetingKey: " ")
-        let merged3 = ctx1.merge(overridingContext: ctx2)
-        XCTAssertEqual(merged3.getTargetingKey(), key1)
-    }
-
     func testContextConvertsToObjectMap() {
         let key1 = "key1"
         let date = Date.now
