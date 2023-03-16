@@ -214,8 +214,7 @@ extension OpenFeatureClient {
                 flagValueType: flagValueType,
                 key: key,
                 defaultValue: defaultValue,
-                provider: provider,
-                invocationContext: context)
+                provider: provider)
 
             let evalDetails = FlagEvaluationDetails<T>.from(providerEval: providerEval, flagKey: key)
             details = evalDetails
@@ -249,8 +248,7 @@ extension OpenFeatureClient {
         flagValueType: FlagValueType,
         key: String,
         defaultValue: V,
-        provider: FeatureProvider,
-        invocationContext: EvaluationContext
+        provider: FeatureProvider
     ) throws -> ProviderEvaluation<V> {
         switch flagValueType {
         case .boolean:
