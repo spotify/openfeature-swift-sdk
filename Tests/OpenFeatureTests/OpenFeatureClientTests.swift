@@ -45,7 +45,6 @@ extension OpenFeatureClientTests {
             -> OpenFeature.ProviderEvaluation<Bool>
         {
             return ProviderEvaluation(value: true)
-
         }
 
         func getStringEvaluation(key: String, defaultValue: String) throws

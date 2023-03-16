@@ -3,13 +3,8 @@ import Foundation
 /// A global singleton which holds base configuration for the OpenFeature library.
 /// Configuration here will be shared across all ``Client``s.
 public class OpenFeatureAPI {
-    // TODO: We use DispatchQueue here instead of being an actor to not lock into new versions of Swift
-    private let apiPropertiesQueue = DispatchQueue(label: "dev.openfeature.api")
-    private let hookQueue = DispatchQueue(label: "dev.openfeature.api.hook")
-
     private var _provider: FeatureProvider?
     private var _evaluationContext: EvaluationContext = MutableContext()
-
     private(set) var hooks: [AnyHook] = []
 
     /// The ``OpenFeatureAPI`` singleton
@@ -24,13 +19,11 @@ public class OpenFeatureAPI {
 
     public func setProvider(provider: FeatureProvider, initialContext: EvaluationContext?) async {
         await provider.initialize(initialContext: initialContext ?? self._evaluationContext)
-        self.apiPropertiesQueue.sync {
-            self._provider = provider
-            guard let newEvaluationContext = initialContext else {
-                return
-            }
-            self._evaluationContext = newEvaluationContext
+        self._provider = provider
+        guard let newEvaluationContext = initialContext else {
+            return
         }
+        self._evaluationContext = newEvaluationContext
     }
 
     public func getProvider() -> FeatureProvider? {
@@ -38,17 +31,12 @@ public class OpenFeatureAPI {
     }
 
     public func clearProvider() {
-        self.apiPropertiesQueue.sync {
-            // TODO Should we clear the cache as well?
-            self._provider = nil
-        }
+        self._provider = nil
     }
 
     public func setEvaluationContext(evaluationContext: EvaluationContext) async {
         await getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
-        self.apiPropertiesQueue.sync {
-            self._evaluationContext = evaluationContext
-        }
+        self._evaluationContext = evaluationContext
     }
 
     public func getEvaluationContext() -> EvaluationContext? {
@@ -68,14 +56,10 @@ public class OpenFeatureAPI {
     }
 
     public func addHooks(hooks: AnyHook...) {
-        hookQueue.sync {
-            self.hooks.append(contentsOf: hooks)
-        }
+        self.hooks.append(contentsOf: hooks)
     }
 
     public func clearHooks() {
-        hookQueue.sync {
-            self.hooks.removeAll()
-        }
+        self.hooks.removeAll()
     }
 }
