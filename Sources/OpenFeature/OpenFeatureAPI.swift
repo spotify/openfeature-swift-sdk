@@ -36,6 +36,10 @@ public class OpenFeatureAPI {
 
     public func setEvaluationContext(evaluationContext: EvaluationContext) async {
         await getProvider()?.onContextSet(oldContext: self._evaluationContext, newContext: evaluationContext)
+        // A provider evaluation reading the global ctx at this point would fail due to stale cache.
+        // To prevent this, the provider should internally manage the ctx to use on each evaluation, and
+        // make sure it's aligned with the values in the cache at all times. If no guarantees are offered by
+        // the provider, the application can expect STALE resolves while setting a new global ctx
         self._evaluationContext = evaluationContext
     }
 
