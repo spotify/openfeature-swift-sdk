@@ -4,8 +4,8 @@ import XCTest
 @testable import OpenFeature
 
 final class HookSpecTests: XCTestCase {
-    func testNoErrorHookCalled() {
-        OpenFeatureAPI.shared.clearProvider()
+    func testNoErrorHookCalled() async {
+        await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let hook = BooleanHookMock()
