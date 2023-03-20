@@ -47,18 +47,3 @@ final class HookSupportTests: XCTestCase {
         XCTAssertEqual(hook.errorCalled, 1)
     }
 }
-extension HookSupportTests {
-    class StringHookMock: StringHook {
-        private var value: EvaluationContext
-
-        init(key: String, value: String) {
-            let ctx = MutableContext()
-            ctx.add(key: key, value: .string(value))
-            self.value = ctx
-        }
-
-        public func before(ctx: HookContext<String>, hints: [String: Any]) -> EvaluationContext? {
-            return value
-        }
-    }
-}
