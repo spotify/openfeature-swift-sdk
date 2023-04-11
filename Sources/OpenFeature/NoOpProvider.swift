@@ -6,11 +6,11 @@ class NoOpProvider: FeatureProvider {
     var metadata: Metadata = NoOpMetadata(name: "No-op provider")
     var hooks: [AnyHook] = []
 
-    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext) {
+    func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) {
         // no-op
     }
 
-    func initialize(initialContext: EvaluationContext) {
+    func initialize(initialContext: EvaluationContext?) {
         // no-op
     }
 

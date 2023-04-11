@@ -6,10 +6,10 @@ public protocol FeatureProvider {
     var metadata: Metadata { get }
 
     // Called by OpenFeatureAPI whenever the new Provider is registered
-    func initialize(initialContext: EvaluationContext) async
+    func initialize(initialContext: EvaluationContext?) async
 
     // Called by OpenFeatureAPI whenever a new EvaluationContext is set by the application
-    func onContextSet(oldContext: EvaluationContext, newContext: EvaluationContext) async
+    func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) async
 
     func getBooleanEvaluation(key: String, defaultValue: Bool) throws -> ProviderEvaluation<
         Bool

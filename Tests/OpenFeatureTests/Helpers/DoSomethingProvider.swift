@@ -4,11 +4,11 @@ import OpenFeature
 class DoSomethingProvider: FeatureProvider {
     public static let name = "Something"
 
-    func onContextSet(oldContext: OpenFeature.EvaluationContext, newContext: OpenFeature.EvaluationContext) {
+    func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
         // no-op
     }
 
-    func initialize(initialContext: OpenFeature.EvaluationContext) {
+    func initialize(initialContext: OpenFeature.EvaluationContext?) {
         // no-op
     }
 
