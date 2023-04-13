@@ -4,7 +4,7 @@ import Foundation
 /// Configuration here will be shared across all ``Client``s.
 public class OpenFeatureAPI {
     private var _provider: FeatureProvider?
-    private var _context: EvaluationContext = MutableContext()
+    private var _context: EvaluationContext?
     private(set) var hooks: [AnyHook] = []
 
     /// The ``OpenFeatureAPI`` singleton

@@ -8,6 +8,7 @@ public enum OpenFeatureError: Error, Equatable {
     case targetingKeyMissingError
     case typeMismatchError
     case valueNotConvertableError
+    case providerNotReadyError
 
     public func errorCode() -> ErrorCode {
         switch self {
@@ -25,6 +26,8 @@ public enum OpenFeatureError: Error, Equatable {
             return .typeMismatch
         case .valueNotConvertableError:
             return .general
+        case .providerNotReadyError:
+            return .providerNotReady
         }
     }
 }
@@ -46,6 +49,8 @@ extension OpenFeatureError: CustomStringConvertible {
             return "Type mismatch"
         case .valueNotConvertableError:
             return "Could not convert value"
+        case .providerNotReadyError:
+            return "The value was resolved before the provider was ready"
         }
     }
 }

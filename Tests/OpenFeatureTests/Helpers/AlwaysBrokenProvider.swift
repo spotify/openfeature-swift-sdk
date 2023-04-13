@@ -6,11 +6,11 @@ class AlwaysBrokenProvider: FeatureProvider {
     var metadata: Metadata = AlwaysBrokenMetadata()
     var hooks: [AnyHook] = []
 
-    func onContextSet(oldContext: OpenFeature.EvaluationContext, newContext: OpenFeature.EvaluationContext) {
+    func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
         // no-op
     }
 
-    func initialize(initialContext: OpenFeature.EvaluationContext) {
+    func initialize(initialContext: OpenFeature.EvaluationContext?) {
         // no-op
     }
 
