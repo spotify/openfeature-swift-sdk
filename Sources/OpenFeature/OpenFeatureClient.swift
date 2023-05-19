@@ -194,7 +194,7 @@ extension OpenFeatureClient {
     ) -> FlagEvaluationDetails<T> {
         let options = options ?? FlagEvaluationOptions(hooks: [], hookHints: [:])
         let hints = options.hookHints
-        let context = openFeatureApi.getEvaluationContext() ?? MutableContext()
+        let context = openFeatureApi.getEvaluationContext()
 
         var details = FlagEvaluationDetails(flagKey: key, value: defaultValue)
         let provider = openFeatureApi.getProvider() ?? NoOpProvider()
@@ -213,6 +213,7 @@ extension OpenFeatureClient {
             let providerEval = try createProviderEvaluation(
                 flagValueType: flagValueType,
                 key: key,
+                context: context,
                 defaultValue: defaultValue,
                 provider: provider)
 
@@ -247,6 +248,7 @@ extension OpenFeatureClient {
     private func createProviderEvaluation<V>(
         flagValueType: FlagValueType,
         key: String,
+        context: EvaluationContext?,
         defaultValue: V,
         provider: FeatureProvider
     ) throws -> ProviderEvaluation<V> {
@@ -258,7 +260,8 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getBooleanEvaluation(
                 key: key,
-                defaultValue: defaultValue) as? ProviderEvaluation<V>
+                defaultValue: defaultValue,
+                context: context) as? ProviderEvaluation<V>
             {
                 return evaluation
             }
@@ -269,7 +272,8 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getStringEvaluation(
                 key: key,
-                defaultValue: defaultValue) as? ProviderEvaluation<V>
+                defaultValue: defaultValue,
+                context: context) as? ProviderEvaluation<V>
             {
                 return evaluation
             }
@@ -280,7 +284,8 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getIntegerEvaluation(
                 key: key,
-                defaultValue: defaultValue) as? ProviderEvaluation<V>
+                defaultValue: defaultValue,
+                context: context) as? ProviderEvaluation<V>
             {
                 return evaluation
             }
@@ -291,7 +296,8 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getDoubleEvaluation(
                 key: key,
-                defaultValue: defaultValue) as? ProviderEvaluation<V>
+                defaultValue: defaultValue,
+                context: context) as? ProviderEvaluation<V>
             {
                 return evaluation
             }
@@ -302,7 +308,8 @@ extension OpenFeatureClient {
 
             if let evaluation = try provider.getObjectEvaluation(
                 key: key,
-                defaultValue: defaultValue) as? ProviderEvaluation<V>
+                defaultValue: defaultValue,
+                context: context) as? ProviderEvaluation<V>
             {
                 return evaluation
             }
