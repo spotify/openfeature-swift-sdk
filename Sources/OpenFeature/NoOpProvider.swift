@@ -14,35 +14,35 @@ class NoOpProvider: FeatureProvider {
         // no-op
     }
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool) throws -> ProviderEvaluation<
+    func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws -> ProviderEvaluation<
         Bool
     > {
         return ProviderEvaluation(
             value: defaultValue, variant: NoOpProvider.passedInDefault, reason: Reason.defaultReason.rawValue)
     }
 
-    func getStringEvaluation(key: String, defaultValue: String) throws -> ProviderEvaluation<
+    func getStringEvaluation(key: String, defaultValue: String, context: EvaluationContext?) throws -> ProviderEvaluation<
         String
     > {
         return ProviderEvaluation(
             value: defaultValue, variant: NoOpProvider.passedInDefault, reason: Reason.defaultReason.rawValue)
     }
 
-    func getIntegerEvaluation(key: String, defaultValue: Int64) throws -> ProviderEvaluation<
+    func getIntegerEvaluation(key: String, defaultValue: Int64, context: EvaluationContext?) throws -> ProviderEvaluation<
         Int64
     > {
         return ProviderEvaluation(
             value: defaultValue, variant: NoOpProvider.passedInDefault, reason: Reason.defaultReason.rawValue)
     }
 
-    func getDoubleEvaluation(key: String, defaultValue: Double) throws -> ProviderEvaluation<
+    func getDoubleEvaluation(key: String, defaultValue: Double, context: EvaluationContext?) throws -> ProviderEvaluation<
         Double
     > {
         return ProviderEvaluation(
             value: defaultValue, variant: NoOpProvider.passedInDefault, reason: Reason.defaultReason.rawValue)
     }
 
-    func getObjectEvaluation(key: String, defaultValue: Value) throws -> ProviderEvaluation<
+    func getObjectEvaluation(key: String, defaultValue: Value, context: EvaluationContext?) throws -> ProviderEvaluation<
         Value
     > {
         return ProviderEvaluation(

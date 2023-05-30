@@ -40,7 +40,7 @@ extension OpenFeatureError: CustomStringConvertible {
         case .generalError(let message):
             return "General error: \(message)"
         case .invalidContextError:
-            return "Invalid context"
+            return "Invalid or missing context"
         case .parseError(let message):
             return "Parse error: \(message)"
         case .targetingKeyMissingError:
