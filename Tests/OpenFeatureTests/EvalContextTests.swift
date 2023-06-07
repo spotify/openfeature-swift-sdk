@@ -24,7 +24,7 @@ final class EvalContextTests: XCTestCase {
         ctx.add(key: "double", value: .double(3.14))
         XCTAssertEqual(ctx.getValue(key: "double")?.asDouble(), 3.14)
 
-        let date = Date.now
+        let date = Date()
         ctx.add(key: "date", value: .date(date))
         XCTAssertEqual(ctx.getValue(key: "date")?.asDate(), date)
     }
@@ -57,7 +57,7 @@ final class EvalContextTests: XCTestCase {
         ctx.add(key: "int", value: .integer(4))
         ctx.add(key: "int2", value: .integer(2))
 
-        let date = Date.now
+        let date = Date()
         ctx.add(key: "dt", value: .date(date))
 
         ctx.add(key: "obj", value: .structure(["val1": .integer(1), "val2": .string("2")]))
@@ -114,7 +114,7 @@ final class EvalContextTests: XCTestCase {
 
     func testContextConvertsToObjectMap() {
         let key1 = "key1"
-        let date = Date.now
+        let date = Date()
         let ctx = MutableContext(targetingKey: key1)
         ctx.add(key: "string", value: .string("value"))
         ctx.add(key: "bool", value: .boolean(false))
