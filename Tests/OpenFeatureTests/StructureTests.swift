@@ -18,7 +18,7 @@ final class StructureTests: XCTestCase {
     }
 
     func testAddAndGetReturnValues() {
-        let date = Date.now
+        let date = Date()
         let structure = MutableStructure()
         structure.add(key: "bool", value: .boolean(true))
         structure.add(key: "string", value: .string("val"))
