@@ -5,7 +5,7 @@ import Foundation
 public class OpenFeatureAPI {
     private var _provider: FeatureProvider?
     private var _context: EvaluationContext?
-    private(set) var hooks: [AnyHook] = []
+    private(set) var hooks: [any Hook] = []
 
     /// The ``OpenFeatureAPI`` singleton
     static public let shared = OpenFeatureAPI()
@@ -59,7 +59,7 @@ public class OpenFeatureAPI {
         return OpenFeatureClient(openFeatureApi: self, name: name, version: version)
     }
 
-    public func addHooks(hooks: AnyHook...) {
+    public func addHooks(hooks: (any Hook)...) {
         self.hooks.append(contentsOf: hooks)
     }
 

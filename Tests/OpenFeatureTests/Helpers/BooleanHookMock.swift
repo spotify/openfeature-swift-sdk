@@ -1,7 +1,9 @@
 import Foundation
 import OpenFeature
 
-class BooleanHookMock: BooleanHook {
+class BooleanHookMock: Hook {
+    typealias HookValue = Bool
+
     public var beforeCalled = 0
     public var afterCalled = 0
     public var finallyAfterCalled = 0
@@ -20,22 +22,22 @@ class BooleanHookMock: BooleanHook {
         self.addEval = addEval
     }
 
-    func before(ctx: HookContext<Bool>, hints: [String: Any]) {
+    func before<HookValue>(ctx: HookContext<HookValue>, hints: [String: Any]) {
         beforeCalled += 1
         self.addEval(self.prefix.isEmpty ? "before" : "\(self.prefix) before")
     }
 
-    func after(ctx: HookContext<Bool>, details: FlagEvaluationDetails<Bool>, hints: [String: Any]) {
+    func after<HookValue>(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any]) {
         afterCalled += 1
         self.addEval(self.prefix.isEmpty ? "after" : "\(self.prefix) after")
     }
 
-    func error(ctx: HookContext<Bool>, error: Error, hints: [String: Any]) {
+    func error<HookValue>(ctx: HookContext<HookValue>, error: Error, hints: [String: Any]) {
         errorCalled += 1
         self.addEval(self.prefix.isEmpty ? "error" : "\(self.prefix) error")
     }
 
-    func finallyAfter(ctx: HookContext<Bool>, hints: [String: Any]) {
+    func finallyAfter<HookValue>(ctx: HookContext<HookValue>, hints: [String: Any]) {
         finallyAfterCalled += 1
         self.addEval(self.prefix.isEmpty ? "finallyAfter" : "\(self.prefix) finallyAfter")
     }

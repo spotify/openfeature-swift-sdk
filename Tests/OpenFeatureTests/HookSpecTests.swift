@@ -10,10 +10,12 @@ final class HookSpecTests: XCTestCase {
 
         let hook = BooleanHookMock()
 
+        let feo = FlagEvaluationOptions(hooks: [hook])
+
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            options: FlagEvaluationOptions(hooks: [.boolean(hook)]))
+            options: feo)
 
         XCTAssertEqual(hook.beforeCalled, 1)
         XCTAssertEqual(hook.afterCalled, 1)
@@ -29,7 +31,7 @@ final class HookSpecTests: XCTestCase {
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            options: FlagEvaluationOptions(hooks: [.boolean(hook)]))
+            options: FlagEvaluationOptions(hooks: [hook]))
 
         XCTAssertEqual(hook.beforeCalled, 1)
         XCTAssertEqual(hook.afterCalled, 0)
@@ -44,14 +46,14 @@ final class HookSpecTests: XCTestCase {
         }
 
         let providerMock = NoOpProviderMock(hooks: [
-            .boolean(BooleanHookMock(prefix: "provider", addEval: addEval))
+            BooleanHookMock(prefix: "provider", addEval: addEval)
         ])
         await OpenFeatureAPI.shared.setProvider(provider: providerMock)
-        OpenFeatureAPI.shared.addHooks(hooks: .boolean(BooleanHookMock(prefix: "api", addEval: addEval)))
+        OpenFeatureAPI.shared.addHooks(hooks: BooleanHookMock(prefix: "api", addEval: addEval))
         let client = OpenFeatureAPI.shared.getClient()
-        client.addHooks(.boolean(BooleanHookMock(prefix: "client", addEval: addEval)))
+        client.addHooks(BooleanHookMock(prefix: "client", addEval: addEval))
         let flagOptions = FlagEvaluationOptions(hooks: [
-            .boolean(BooleanHookMock(prefix: "invocation", addEval: addEval))
+            BooleanHookMock(prefix: "invocation", addEval: addEval)
         ])
 
         _ = client.getBooleanValue(key: "key", defaultValue: false, options: flagOptions)
@@ -77,7 +79,7 @@ final class HookSpecTests: XCTestCase {
 
 extension HookSpecTests {
     class NoOpProviderMock: NoOpProvider {
-        init(hooks: [AnyHook]) {
+        init(hooks: [any Hook]) {
             super.init()
             self.hooks.append(contentsOf: hooks)
         }

@@ -4,7 +4,7 @@ class NoOpProvider: FeatureProvider {
     public static let passedInDefault = "Passed in default"
 
     var metadata: Metadata = NoOpMetadata(name: "No-op provider")
-    var hooks: [AnyHook] = []
+    var hooks: [any Hook] = []
 
     func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) {
         // no-op

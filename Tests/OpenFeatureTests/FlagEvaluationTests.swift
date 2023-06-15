@@ -22,8 +22,8 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testHooksPersist() {
-        let hook1: AnyHook = .boolean(BooleanHookMock())
-        let hook2: AnyHook = .boolean(BooleanHookMock())
+        let hook1 = BooleanHookMock()
+        let hook2 = BooleanHookMock()
 
         OpenFeatureAPI.shared.addHooks(hooks: hook1)
 
@@ -39,8 +39,8 @@ final class FlagEvaluationTests: XCTestCase {
     }
 
     func testClientHooksPersist() {
-        let hook1: AnyHook = .boolean(BooleanHookMock())
-        let hook2: AnyHook = .boolean(BooleanHookMock())
+        let hook1 = BooleanHookMock()
+        let hook2 = BooleanHookMock()
 
         let client = OpenFeatureAPI.shared.getClient()
         client.addHooks(hook1)
@@ -138,11 +138,11 @@ final class FlagEvaluationTests: XCTestCase {
         let clientHook = BooleanHookMock()
         let invocationHook = BooleanHookMock()
 
-        client.addHooks(.boolean(clientHook))
+        client.addHooks(clientHook)
         _ = client.getBooleanValue(
             key: "key",
             defaultValue: false,
-            options: FlagEvaluationOptions(hooks: [.boolean(invocationHook)]))
+            options: FlagEvaluationOptions(hooks: [invocationHook]))
 
         XCTAssertEqual(clientHook.beforeCalled, 1)
         XCTAssertEqual(invocationHook.beforeCalled, 1)

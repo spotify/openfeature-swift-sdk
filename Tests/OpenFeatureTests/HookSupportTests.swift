@@ -7,7 +7,6 @@ final class HookSupportTests: XCTestCase {
     func testShouldAlwaysCallGenericHook() throws {
         let metadata = OpenFeatureAPI.shared.getClient().metadata
         let hook = BooleanHookMock()
-        let boolHook: AnyHook = .boolean(hook)
         let hookContext: HookContext<Bool> = HookContext(
             flagKey: "flagKey",
             type: .boolean,
@@ -21,24 +20,24 @@ final class HookSupportTests: XCTestCase {
         hookSupport.beforeHooks(
             flagValueType: .boolean,
             hookCtx: hookContext,
-            hooks: [boolHook],
+            hooks: [hook],
             hints: [:])
         try hookSupport.afterHooks(
             flagValueType: .boolean,
             hookCtx: hookContext,
             details: FlagEvaluationDetails(flagKey: "", value: false),
-            hooks: [boolHook],
+            hooks: [hook],
             hints: [:])
         hookSupport.afterAllHooks(
             flagValueType: .boolean,
             hookCtx: hookContext,
-            hooks: [boolHook],
+            hooks: [hook],
             hints: [:])
         hookSupport.errorHooks(
             flagValueType: .boolean,
             hookCtx: hookContext,
             error: OpenFeatureError.invalidContextError,
-            hooks: [boolHook],
+            hooks: [hook],
             hints: [:])
 
         XCTAssertEqual(hook.beforeCalled, 1)

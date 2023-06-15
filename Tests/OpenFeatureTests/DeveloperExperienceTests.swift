@@ -24,7 +24,7 @@ final class DeveloperExperienceTests: XCTestCase {
         let client = OpenFeatureAPI.shared.getClient()
 
         let hook = BooleanHookMock()
-        client.addHooks(.boolean(hook))
+        client.addHooks(hook)
 
         _ = client.getBooleanValue(key: "test", defaultValue: false)
         XCTAssertEqual(hook.finallyAfterCalled, 1)
@@ -35,7 +35,7 @@ final class DeveloperExperienceTests: XCTestCase {
         let client = OpenFeatureAPI.shared.getClient()
 
         let hook = BooleanHookMock()
-        let options = FlagEvaluationOptions(hooks: [.boolean(hook)])
+        let options = FlagEvaluationOptions(hooks: [hook])
         _ = client.getBooleanValue(key: "test", defaultValue: false, options: options)
 
         XCTAssertEqual(hook.finallyAfterCalled, 1)
