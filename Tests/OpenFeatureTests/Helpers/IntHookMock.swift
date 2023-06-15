@@ -1,8 +1,8 @@
 import Foundation
 import OpenFeature
 
-class BooleanHookMock: Hook {
-    typealias HookValue = Bool
+class IntHookMock: Hook {
+    typealias HookValue = Int64
 
     public var beforeCalled = 0
     public var afterCalled = 0
