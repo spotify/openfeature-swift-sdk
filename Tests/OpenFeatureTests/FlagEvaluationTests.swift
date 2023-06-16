@@ -56,36 +56,36 @@ final class FlagEvaluationTests: XCTestCase {
         let client = OpenFeatureAPI.shared.getClient()
         let key = "key"
 
-        XCTAssertEqual(client.getBooleanValue(key: key, defaultValue: false), true)
-        XCTAssertEqual(client.getBooleanValue(key: key, defaultValue: false), true)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: false), true)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: false), true)
         XCTAssertEqual(
-            client.getBooleanValue(
+            client.getValue(
                 key: key, defaultValue: false, options: FlagEvaluationOptions()), true)
 
-        XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test"), "tset")
-        XCTAssertEqual(client.getStringValue(key: key, defaultValue: "test"), "tset")
+        XCTAssertEqual(client.getValue(key: key, defaultValue: "test"), "tset")
+        XCTAssertEqual(client.getValue(key: key, defaultValue: "test"), "tset")
         XCTAssertEqual(
-            client.getStringValue(
+            client.getValue(
                 key: key, defaultValue: "test", options: FlagEvaluationOptions()), "tset")
 
-        XCTAssertEqual(client.getIntegerValue(key: key, defaultValue: 4), 400)
-        XCTAssertEqual(client.getIntegerValue(key: key, defaultValue: 4), 400)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: 4), 400)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: 4), 400)
         XCTAssertEqual(
-            client.getIntegerValue(key: key, defaultValue: 4, options: FlagEvaluationOptions()),
+            client.getValue(key: key, defaultValue: 4, options: FlagEvaluationOptions()),
             400)
 
-        XCTAssertEqual(client.getDoubleValue(key: key, defaultValue: 0.4), 40.0)
-        XCTAssertEqual(client.getDoubleValue(key: key, defaultValue: 0.4), 40.0)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: 0.4), 40.0)
+        XCTAssertEqual(client.getValue(key: key, defaultValue: 0.4), 40.0)
         XCTAssertEqual(
-            client.getDoubleValue(key: key, defaultValue: 0.4, options: FlagEvaluationOptions()),
+            client.getValue(key: key, defaultValue: 0.4, options: FlagEvaluationOptions()),
             40.0)
 
-        XCTAssertEqual(client.getObjectValue(key: key, defaultValue: .structure([:])), .null)
-        XCTAssertEqual(client.getObjectValue(key: key, defaultValue: .structure([:])), .null)
-        XCTAssertEqual(
-            client.getObjectValue(
-                key: key, defaultValue: .structure([:]), options: FlagEvaluationOptions()), .null
-        )
+        var value: Value = client.getValue(key: key, defaultValue: .structure([:]))
+        XCTAssertEqual(value, .null)
+        value = client.getValue(key: key, defaultValue: .structure([:]))
+        XCTAssertEqual(value, .null)
+        value = client.getValue(key: key, defaultValue: .structure([:]), options: FlagEvaluationOptions())
+        XCTAssertEqual(value, .null)
     }
 
     func testDetailedFlagEvaluation() async {
@@ -94,39 +94,39 @@ final class FlagEvaluationTests: XCTestCase {
         let key = "key"
 
         let booleanDetails = FlagEvaluationDetails(flagKey: key, value: true, variant: nil)
-        XCTAssertEqual(client.getBooleanDetails(key: key, defaultValue: false), booleanDetails)
-        XCTAssertEqual(client.getBooleanDetails(key: key, defaultValue: false), booleanDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: false), booleanDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: false), booleanDetails)
         XCTAssertEqual(
-            client.getBooleanDetails(
+            client.getDetails(
                 key: key, defaultValue: false, options: FlagEvaluationOptions()), booleanDetails)
 
         let stringDetails = FlagEvaluationDetails(flagKey: key, value: "tset", variant: nil)
-        XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test"), stringDetails)
-        XCTAssertEqual(client.getStringDetails(key: key, defaultValue: "test"), stringDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: "test"), stringDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: "test"), stringDetails)
         XCTAssertEqual(
-            client.getStringDetails(
+            client.getDetails(
                 key: key, defaultValue: "test", options: FlagEvaluationOptions()), stringDetails)
 
         let integerDetails = FlagEvaluationDetails(flagKey: key, value: Int64(400), variant: nil)
-        XCTAssertEqual(client.getIntegerDetails(key: key, defaultValue: 4), integerDetails)
-        XCTAssertEqual(client.getIntegerDetails(key: key, defaultValue: 4), integerDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: 4), integerDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: 4), integerDetails)
         XCTAssertEqual(
-            client.getIntegerDetails(
+            client.getDetails(
                 key: key, defaultValue: 4, options: FlagEvaluationOptions()), integerDetails)
 
         let doubleDetails = FlagEvaluationDetails(flagKey: key, value: 40.0, variant: nil)
-        XCTAssertEqual(client.getDoubleDetails(key: key, defaultValue: 0.4), doubleDetails)
-        XCTAssertEqual(client.getDoubleDetails(key: key, defaultValue: 0.4), doubleDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: 0.4), doubleDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: 0.4), doubleDetails)
         XCTAssertEqual(
-            client.getDoubleDetails(
+            client.getDetails(
                 key: key, defaultValue: 0.4, options: FlagEvaluationOptions()), doubleDetails)
 
         let objectDetails = FlagEvaluationDetails(flagKey: key, value: Value.null, variant: nil)
-        XCTAssertEqual(client.getObjectDetails(key: key, defaultValue: .structure([:])), objectDetails)
+        XCTAssertEqual(client.getDetails(key: key, defaultValue: .structure([:])), objectDetails)
         XCTAssertEqual(
-            client.getObjectDetails(key: key, defaultValue: .structure([:])), objectDetails)
+            client.getDetails(key: key, defaultValue: .structure([:])), objectDetails)
         XCTAssertEqual(
-            client.getObjectDetails(
+            client.getDetails(
                 key: key, defaultValue: .structure([:]), options: FlagEvaluationOptions()),
             objectDetails)
     }
@@ -139,7 +139,7 @@ final class FlagEvaluationTests: XCTestCase {
         let invocationHook = BooleanHookMock()
 
         client.addHooks(clientHook)
-        _ = client.getBooleanValue(
+        _ = client.getValue(
             key: "key",
             defaultValue: false,
             options: FlagEvaluationOptions(hooks: [invocationHook]))
@@ -152,8 +152,8 @@ final class FlagEvaluationTests: XCTestCase {
         await OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
-        XCTAssertFalse(client.getBooleanValue(key: "testkey", defaultValue: false))
-        let details = client.getBooleanDetails(key: "testkey", defaultValue: false)
+        XCTAssertFalse(client.getValue(key: "testkey", defaultValue: false))
+        let details = client.getDetails(key: "testkey", defaultValue: false)
 
         XCTAssertEqual(details.errorCode, .flagNotFound)
         XCTAssertEqual(details.reason, Reason.error.rawValue)

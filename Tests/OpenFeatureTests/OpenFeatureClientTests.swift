@@ -10,7 +10,7 @@ final class OpenFeatureClientTests: XCTestCase {
 
         let client = OpenFeatureAPI.shared.getClient()
 
-        let details = client.getStringDetails(key: "key", defaultValue: "test")
+        let details = client.getDetails(key: "key", defaultValue: "test")
 
         XCTAssertEqual(details.value, "tset")
     }
