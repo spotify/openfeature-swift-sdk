@@ -11,19 +11,24 @@ public protocol FeatureProvider {
     // Called by OpenFeatureAPI whenever a new EvaluationContext is set by the application
     func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) async
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Bool
-    >
-    func getStringEvaluation(key: String, defaultValue: String, context: EvaluationContext?) throws -> ProviderEvaluation<
-        String
-    >
-    func getIntegerEvaluation(key: String, defaultValue: Int64, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Int64
-    >
-    func getDoubleEvaluation(key: String, defaultValue: Double, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Double
-    >
-    func getObjectEvaluation(key: String, defaultValue: Value, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Value
-    >
+    func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Bool
+        >
+    func getStringEvaluation(key: String, defaultValue: String, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            String
+        >
+    func getIntegerEvaluation(key: String, defaultValue: Int64, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Int64
+        >
+    func getDoubleEvaluation(key: String, defaultValue: Double, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Double
+        >
+    func getObjectEvaluation(key: String, defaultValue: Value, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Value
+        >
 }

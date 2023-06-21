@@ -15,33 +15,43 @@ class DoSomethingProvider: FeatureProvider {
     var hooks: [OpenFeature.AnyHook] = []
     var metadata: OpenFeature.Metadata = DoMetadata()
 
-    func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Bool
-    > {
+    func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Bool
+        >
+    {
         return ProviderEvaluation(value: !defaultValue)
     }
 
-    func getStringEvaluation(key: String, defaultValue: String, context: EvaluationContext?) throws -> ProviderEvaluation<
-        String
-    > {
+    func getStringEvaluation(key: String, defaultValue: String, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            String
+        >
+    {
         return ProviderEvaluation(value: String(defaultValue.reversed()))
     }
 
-    func getIntegerEvaluation(key: String, defaultValue: Int64, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Int64
-    > {
+    func getIntegerEvaluation(key: String, defaultValue: Int64, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Int64
+        >
+    {
         return ProviderEvaluation(value: defaultValue * 100)
     }
 
-    func getDoubleEvaluation(key: String, defaultValue: Double, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Double
-    > {
+    func getDoubleEvaluation(key: String, defaultValue: Double, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Double
+        >
+    {
         return ProviderEvaluation(value: defaultValue * 100)
     }
 
-    func getObjectEvaluation(key: String, defaultValue: Value, context: EvaluationContext?) throws -> ProviderEvaluation<
-        Value
-    > {
+    func getObjectEvaluation(key: String, defaultValue: Value, context: EvaluationContext?) throws
+        -> ProviderEvaluation<
+            Value
+        >
+    {
         return ProviderEvaluation(value: .null)
     }
 
