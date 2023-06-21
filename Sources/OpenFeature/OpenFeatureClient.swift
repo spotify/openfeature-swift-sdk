@@ -15,8 +15,8 @@ public class OpenFeatureClient: Client {
         return _metadata
     }
 
-    private var _hooks: [AnyHook] = []
-    public var hooks: [AnyHook] {
+    private var _hooks: [any Hook] = []
+    public var hooks: [any Hook] {
         return _hooks
     }
 
@@ -30,7 +30,7 @@ public class OpenFeatureClient: Client {
         self._metadata = ClientMetadata(name: name)
     }
 
-    public func addHooks(_ hooks: AnyHook...) {
+    public func addHooks(_ hooks: any Hook...) {
         self.hookQueue.sync {
             self._hooks.append(contentsOf: hooks)
         }

@@ -4,7 +4,7 @@ import Foundation
 
 class AlwaysBrokenProvider: FeatureProvider {
     var metadata: Metadata = AlwaysBrokenMetadata()
-    var hooks: [AnyHook] = []
+    var hooks: [any Hook] = []
 
     func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
         // no-op

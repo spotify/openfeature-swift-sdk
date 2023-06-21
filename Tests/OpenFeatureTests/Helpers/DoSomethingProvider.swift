@@ -12,7 +12,7 @@ class DoSomethingProvider: FeatureProvider {
         // no-op
     }
 
-    var hooks: [OpenFeature.AnyHook] = []
+    var hooks: [any OpenFeature.Hook] = []
     var metadata: OpenFeature.Metadata = DoMetadata()
 
     func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws -> ProviderEvaluation<

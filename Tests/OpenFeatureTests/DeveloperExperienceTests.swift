@@ -23,22 +23,42 @@ final class DeveloperExperienceTests: XCTestCase {
         await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
-        let hook = BooleanHookMock()
-        client.addHooks(.boolean(hook))
+        let booleanHook = BooleanHookMock()
+        let intHook = IntHookMock()
+        client.addHooks(booleanHook, intHook)
 
-        _ = client.getBooleanValue(key: "test", defaultValue: false)
-        XCTAssertEqual(hook.finallyAfterCalled, 1)
+        _ = client.getStringValue(key: "string-test", defaultValue: "test")
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 0)
+        XCTAssertEqual(intHook.finallyAfterCalled, 0)
+
+        _ = client.getBooleanValue(key: "bool-test", defaultValue: false)
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 1)
+        XCTAssertEqual(intHook.finallyAfterCalled, 0)
+
+        _ = client.getIntegerValue(key: "int-test", defaultValue: 0)
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 1)
+        XCTAssertEqual(intHook.finallyAfterCalled, 1)
     }
 
     func testEvalHooks() async {
         await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
-        let hook = BooleanHookMock()
-        let options = FlagEvaluationOptions(hooks: [.boolean(hook)])
-        _ = client.getBooleanValue(key: "test", defaultValue: false, options: options)
+        let booleanHook = BooleanHookMock()
+        let intHook = IntHookMock()
+        let options = FlagEvaluationOptions(hooks: [booleanHook, intHook])
 
-        XCTAssertEqual(hook.finallyAfterCalled, 1)
+        _ = client.getStringValue(key: "test", defaultValue: "test", options: options)
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 0)
+        XCTAssertEqual(intHook.finallyAfterCalled, 0)
+
+        _ = client.getBooleanValue(key: "test", defaultValue: false, options: options)
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 1)
+        XCTAssertEqual(intHook.finallyAfterCalled, 0)
+
+        _ = client.getIntegerValue(key: "test", defaultValue: 0, options: options)
+        XCTAssertEqual(booleanHook.finallyAfterCalled, 1)
+        XCTAssertEqual(intHook.finallyAfterCalled, 1)
     }
 
     func testBrokenProvider() async {
