@@ -103,7 +103,7 @@ extension Features {
     }
 
     public func getObjectDetails(key: String, defaultValue: Value) -> FlagEvaluationDetails<Value> {
-        return getObjectDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
+        getDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
     }
 
     public func getObjectDetails(
