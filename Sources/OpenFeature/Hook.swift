@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol Hook {
-    associatedtype HookValue: Equatable
+    associatedtype HookValue: AllowedFlagValueType
 
     func before<HookValue>(ctx: HookContext<HookValue>, hints: [String: Any])
 
@@ -33,36 +33,6 @@ extension Hook {
 
     public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
         // Default implementation
-        return true
-    }
-}
-
-extension Hook where HookValue == Bool {
-    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
-        return flagValueType == .boolean
-    }
-}
-
-extension Hook where HookValue == String {
-    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
-        return flagValueType == .string
-    }
-}
-
-extension Hook where HookValue == Int64 {
-    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
-        return flagValueType == .integer
-    }
-}
-
-extension Hook where HookValue == Double {
-    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
-        return flagValueType == .double
-    }
-}
-
-extension Hook where HookValue == Value {
-    public func supportsFlagValueType(flagValueType: FlagValueType) -> Bool {
-        return flagValueType == .object
+        return HookValue.flagValueType == flagValueType
     }
 }

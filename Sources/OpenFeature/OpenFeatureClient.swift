@@ -38,144 +38,28 @@ public class OpenFeatureClient: Client {
 }
 
 extension OpenFeatureClient {
-    // MARK: Boolean
-    public func getBooleanValue(key: String, defaultValue: Bool) -> Bool {
-        return getBooleanDetails(key: key, defaultValue: defaultValue).value
+    // MARK: Generics
+    public func getValue<T>(key: String, defaultValue: T) -> T where T : AllowedFlagValueType {
+        getDetails(key: key, defaultValue: defaultValue).value
     }
 
-    public func getBooleanValue(
-        key: String, defaultValue: Bool, options: FlagEvaluationOptions
-    )
-        -> Bool
-    {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, options: options).value
+    public func getValue<T>(key: String, defaultValue: T, options: FlagEvaluationOptions) -> T where T : AllowedFlagValueType {
+        getDetails(key: key, defaultValue: defaultValue, options: options).value
     }
 
-    public func getBooleanDetails(key: String, defaultValue: Bool) -> FlagEvaluationDetails<Bool> {
-        return getBooleanDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
+    public func getDetails<T>(key: String, defaultValue: T)
+    -> FlagEvaluationDetails<T> where T : AllowedFlagValueType, T : Equatable {
+        getDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
     }
 
-    public func getBooleanDetails(
-        key: String, defaultValue: Bool, options: FlagEvaluationOptions
-    )
-        -> FlagEvaluationDetails<Bool>
-    {
-        return evaluateFlag(
-            flagValueType: .boolean, key: key, defaultValue: defaultValue, options: options
+    public func getDetails<T>(key: String, defaultValue: T, options: FlagEvaluationOptions)
+    -> FlagEvaluationDetails<T> where T : AllowedFlagValueType, T : Equatable {
+        evaluateFlag(
+            flagValueType: T.flagValueType,
+            key: key,
+            defaultValue: defaultValue,
+            options: options
         )
-    }
-}
-
-extension OpenFeatureClient {
-    // MARK: String
-    public func getStringValue(key: String, defaultValue: String) -> String {
-        return getStringDetails(key: key, defaultValue: defaultValue).value
-    }
-
-    public func getStringValue(
-        key: String, defaultValue: String, options: FlagEvaluationOptions
-    )
-        -> String
-    {
-        return getStringDetails(key: key, defaultValue: defaultValue, options: options).value
-    }
-
-    public func getStringDetails(key: String, defaultValue: String) -> FlagEvaluationDetails<String> {
-        return getStringDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
-    }
-
-    public func getStringDetails(
-        key: String, defaultValue: String, options: FlagEvaluationOptions
-    )
-        -> FlagEvaluationDetails<String>
-    {
-        return evaluateFlag(
-            flagValueType: .string, key: key, defaultValue: defaultValue, options: options)
-    }
-}
-
-extension OpenFeatureClient {
-    // MARK: Integer
-    public func getIntegerValue(key: String, defaultValue: Int64) -> Int64 {
-        return getIntegerDetails(key: key, defaultValue: defaultValue).value
-    }
-
-    public func getIntegerValue(
-        key: String, defaultValue: Int64, options: FlagEvaluationOptions
-    )
-        -> Int64
-    {
-        return getIntegerDetails(key: key, defaultValue: defaultValue, options: options).value
-    }
-
-    public func getIntegerDetails(key: String, defaultValue: Int64) -> FlagEvaluationDetails<Int64> {
-        return getIntegerDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
-    }
-
-    public func getIntegerDetails(
-        key: String, defaultValue: Int64, options: FlagEvaluationOptions
-    )
-        -> FlagEvaluationDetails<Int64>
-    {
-        return evaluateFlag(
-            flagValueType: .integer, key: key, defaultValue: defaultValue, options: options
-        )
-    }
-}
-
-extension OpenFeatureClient {
-    // MARK: Double
-    public func getDoubleValue(key: String, defaultValue: Double) -> Double {
-        return getDoubleDetails(key: key, defaultValue: defaultValue).value
-    }
-
-    public func getDoubleValue(
-        key: String, defaultValue: Double, options: FlagEvaluationOptions
-    )
-        -> Double
-    {
-        return getDoubleDetails(key: key, defaultValue: defaultValue, options: options).value
-    }
-
-    public func getDoubleDetails(key: String, defaultValue: Double) -> FlagEvaluationDetails<Double> {
-        return getDoubleDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
-    }
-
-    public func getDoubleDetails(
-        key: String, defaultValue: Double, options: FlagEvaluationOptions
-    )
-        -> FlagEvaluationDetails<Double>
-    {
-        return evaluateFlag(
-            flagValueType: .double, key: key, defaultValue: defaultValue, options: options)
-    }
-}
-
-extension OpenFeatureClient {
-    // MARK: Object
-    public func getObjectValue(key: String, defaultValue: Value) -> Value {
-        return getObjectDetails(key: key, defaultValue: defaultValue).value
-    }
-
-    public func getObjectValue(
-        key: String, defaultValue: Value, options: FlagEvaluationOptions
-    )
-        -> Value
-    {
-        return getObjectDetails(key: key, defaultValue: defaultValue, options: options).value
-    }
-
-    public func getObjectDetails(key: String, defaultValue: Value) -> FlagEvaluationDetails<Value> {
-        return getObjectDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
-    }
-
-    public func getObjectDetails(
-        key: String, defaultValue: Value, options: FlagEvaluationOptions
-    )
-        -> FlagEvaluationDetails<Value>
-    {
-        return evaluateFlag(
-            flagValueType: .object, key: key, defaultValue: defaultValue, options: options)
     }
 }
 

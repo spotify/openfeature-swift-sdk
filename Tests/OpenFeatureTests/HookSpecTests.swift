@@ -12,7 +12,7 @@ final class HookSpecTests: XCTestCase {
 
         let feo = FlagEvaluationOptions(hooks: [hook])
 
-        _ = client.getBooleanValue(
+        _ = client.getValue(
             key: "key",
             defaultValue: false,
             options: feo)
@@ -28,7 +28,7 @@ final class HookSpecTests: XCTestCase {
         let client = OpenFeatureAPI.shared.getClient()
         let hook = BooleanHookMock()
 
-        _ = client.getBooleanValue(
+        _ = client.getValue(
             key: "key",
             defaultValue: false,
             options: FlagEvaluationOptions(hooks: [hook]))
@@ -56,7 +56,7 @@ final class HookSpecTests: XCTestCase {
             BooleanHookMock(prefix: "invocation", addEval: addEval)
         ])
 
-        _ = client.getBooleanValue(key: "key", defaultValue: false, options: flagOptions)
+        _ = client.getValue(key: "key", defaultValue: false, options: flagOptions)
 
         XCTAssertEqual(
             evalOrder,
