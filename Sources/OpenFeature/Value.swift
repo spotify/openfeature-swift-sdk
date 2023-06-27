@@ -1,5 +1,8 @@
 import Foundation
 
+/// Values serve as a generic return type for structure data from providers.
+/// Providers may deal in JSON, protobuf, XML or some other data-interchange format.
+/// This intermediate representation provides a good medium of exchange.
 public enum Value: Equatable {
     case boolean(Bool)
     case string(String)

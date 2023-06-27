@@ -1,5 +1,6 @@
 import Foundation
 
+/// A ``FeatureProvider`` that simply returns the default values passed to it.
 class NoOpProvider: FeatureProvider {
     public static let passedInDefault = "Passed in default"
 
