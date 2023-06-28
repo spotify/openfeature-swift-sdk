@@ -46,13 +46,14 @@ final class ValueTests: XCTestCase {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
+        let date = try XCTUnwrap(formatter.date(from: "2022-01-01 12:00:00"))
+
         let value: Value = .structure([
             "null": .null,
             "bool": .boolean(true),
             "int": .integer(3),
             "double": .double(4.5),
-            // swiftlint:disable:next force_unwrapping
-            "date": .date(formatter.date(from: "2022-01-01 12:00:00")!),
+            "date": .date(date),
             "list": .list([.boolean(false), .integer(4)]),
             "structure": .structure(["int": .integer(5)]),
         ])
@@ -67,8 +68,8 @@ final class ValueTests: XCTestCase {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        // swiftlint:disable:next force_unwrapping
-        let date = formatter.date(from: "2022-01-01 12:00:00")!
+        let date = try XCTUnwrap(formatter.date(from: "2022-01-01 12:00:00"))
+        
         let value: Value = .structure([
             "null": .null,
             "bool": .boolean(true),
@@ -81,7 +82,7 @@ final class ValueTests: XCTestCase {
         let expected = TestValue(
             bool: true, int: 3, double: 4.5, date: date, list: [3, 5], structure: .init(field1: "test", field2: 12))
 
-        let decodedValue = try value.decode(to: TestValue.self)
+        let decodedValue: TestValue = try value.decode()
 
         XCTAssertEqual(decodedValue, expected)
     }
