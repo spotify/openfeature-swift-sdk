@@ -6,3 +6,5 @@
 
 - Fabrizio Demaria (fabriziodemaria, Spotify)
 - Mattias Frånberg (mfranberg, Spotify)
+- Alina Andersone (alina-v1, Spotify)
+- Brian Hackett (Calibretto, Spotify)
