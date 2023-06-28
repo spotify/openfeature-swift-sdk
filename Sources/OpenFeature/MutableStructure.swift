@@ -1,5 +1,7 @@
 import Foundation
 
+/// The ``MutableStructure`` is a ``Structure`` implementation which is not threadsafe, and whose attributes can
+/// be modified after instantiation.
 public class MutableStructure: Structure {
     private var attributes: [String: Value]
 

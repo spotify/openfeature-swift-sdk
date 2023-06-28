@@ -1,5 +1,7 @@
 import Foundation
 
+/// An extension point which can run around flag resolution.
+/// They are intended to be used as a way to add custom logic to the lifecycle of flag evaluation.
 public protocol Hook {
     associatedtype HookValue: AllowedFlagValueType
 
@@ -19,7 +21,9 @@ extension Hook {
         // Default implementation
     }
 
-    public func after<HookValue>(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any]) {
+    public func after<HookValue>(
+        ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any]
+    ) {
         // Default implementation
     }
 

@@ -1,5 +1,7 @@
 import Foundation
 
+/// The ``MutableContext`` is an ``EvaluationContext`` implementation which is not threadsafe, and whose attributes can
+/// be modified after instantiation.
 public class MutableContext: EvaluationContext {
     private var targetingKey: String
     private var structure: MutableStructure

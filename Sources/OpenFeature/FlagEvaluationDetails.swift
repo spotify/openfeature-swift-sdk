@@ -1,5 +1,6 @@
 import Foundation
 
+/// Contains information about how the evaluation happened, including any resolved values.
 public struct FlagEvaluationDetails<T: Equatable>: BaseEvaluation, Equatable {
     public var flagKey: String
     public var value: T

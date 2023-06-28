@@ -1,5 +1,6 @@
 import Foundation
 
+/// An API for the type-specific fetch methods offered to users.
 public protocol Features {
     // MARK: Generics
     func getValue<T: AllowedFlagValueType>(key: String, defaultValue: T) -> T
