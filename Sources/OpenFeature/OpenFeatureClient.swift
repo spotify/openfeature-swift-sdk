@@ -49,7 +49,6 @@ extension OpenFeatureClient {
         -> FlagEvaluationDetails<T> where T: AllowedFlagValueType, T: Equatable
     {
         evaluateFlag(
-            flagValueType: T.flagValueType,
             key: key,
             defaultValue: defaultValue,
             options: options
