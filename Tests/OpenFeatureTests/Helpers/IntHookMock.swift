@@ -27,7 +27,8 @@ class IntHookMock: Hook {
         self.addEval(self.prefix.isEmpty ? "before" : "\(self.prefix) before")
     }
 
-    func after<HookValue>(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any]) {
+    func after<HookValue>(ctx: HookContext<HookValue>, details: FlagEvaluationDetails<HookValue>, hints: [String: Any])
+    {
         afterCalled += 1
         self.addEval(self.prefix.isEmpty ? "after" : "\(self.prefix) after")
     }

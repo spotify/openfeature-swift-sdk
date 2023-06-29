@@ -30,22 +30,30 @@ public class OpenFeatureClient: Client {
 
 extension OpenFeatureClient {
     // MARK: Generics
-    public func getValue<T>(key: String, defaultValue: T) -> T where T : AllowedFlagValueType {
+    public func getValue<T>(key: String, defaultValue: T) -> T where T: AllowedFlagValueType {
         getDetails(key: key, defaultValue: defaultValue).value
     }
 
-    public func getValue<T>(key: String, defaultValue: T, options: FlagEvaluationOptions) -> T where T : AllowedFlagValueType {
+    public func getValue<T>(key: String, defaultValue: T, options: FlagEvaluationOptions) -> T
+    where T: AllowedFlagValueType {
         getDetails(key: key, defaultValue: defaultValue, options: options).value
     }
 
     public func getDetails<T>(key: String, defaultValue: T)
-    -> FlagEvaluationDetails<T> where T : AllowedFlagValueType, T : Equatable {
+        -> FlagEvaluationDetails<T> where T: AllowedFlagValueType, T: Equatable
+    {
         getDetails(key: key, defaultValue: defaultValue, options: FlagEvaluationOptions())
     }
 
     public func getDetails<T>(key: String, defaultValue: T, options: FlagEvaluationOptions)
-    -> FlagEvaluationDetails<T> where T : AllowedFlagValueType, T : Equatable {
-        evaluateFlag(key: key, defaultValue: defaultValue, options: options)
+        -> FlagEvaluationDetails<T> where T: AllowedFlagValueType, T: Equatable
+    {
+        evaluateFlag(
+            flagValueType: T.flagValueType,
+            key: key,
+            defaultValue: defaultValue,
+            options: options
+        )
     }
 }
 
