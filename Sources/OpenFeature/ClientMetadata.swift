@@ -1,5 +1,5 @@
 import Foundation
 
-public protocol Metadata {
+public protocol ClientMetadata {
     var name: String? { get }
 }

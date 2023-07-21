@@ -8,7 +8,7 @@ public class OpenFeatureClient: Client {
     private(set) var name: String?
     private(set) var version: String?
 
-    private(set) public var metadata: Metadata
+    private(set) public var metadata: ClientMetadata
     private(set) public var hooks: [any Hook] = []
 
     private var hookSupport = HookSupport()
@@ -18,7 +18,7 @@ public class OpenFeatureClient: Client {
         self.openFeatureApi = openFeatureApi
         self.name = name
         self.version = version
-        self.metadata = ClientMetadata(name: name)
+        self.metadata = Metadata(name: name)
     }
 
     public func addHooks(_ hooks: any Hook...) {
@@ -57,7 +57,7 @@ extension OpenFeatureClient {
 }
 
 extension OpenFeatureClient {
-    public struct ClientMetadata: Metadata {
+    public struct Metadata: ClientMetadata {
         public var name: String?
     }
 }
@@ -99,7 +99,8 @@ extension OpenFeatureClient {
             details = evalDetails
 
             try hookSupport.afterHooks(
-                flagValueType: T.flagValueType, hookCtx: hookCtx, details: evalDetails, hooks: mergedHooks, hints: hints)
+                flagValueType: T.flagValueType, hookCtx: hookCtx, details: evalDetails, hooks: mergedHooks, hints: hints
+            )
         } catch {
             logger.error("Unable to correctly evaluate flag with key \(key) due to exception \(error)")
 

@@ -2,7 +2,7 @@ import Foundation
 
 /// Interface used to resolve flags of varying types.
 public protocol Client: Features {
-    var metadata: Metadata { get }
+    var metadata: ClientMetadata { get }
 
     /// The hooks associated to this client.
     var hooks: [any Hook] { get }
