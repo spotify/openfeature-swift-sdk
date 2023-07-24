@@ -69,7 +69,7 @@ final class ValueTests: XCTestCase {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
         let date = try XCTUnwrap(formatter.date(from: "2022-01-01 12:00:00"))
-        
+
         let value: Value = .structure([
             "null": .null,
             "bool": .boolean(true),

@@ -4,7 +4,7 @@ import Foundation
 class NoOpProvider: FeatureProvider {
     public static let passedInDefault = "Passed in default"
 
-    var metadata: Metadata = NoOpMetadata(name: "No-op provider")
+    var metadata: ProviderMetadata = NoOpMetadata(name: "No-op provider")
     var hooks: [any Hook] = []
 
     func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) {
@@ -62,7 +62,7 @@ class NoOpProvider: FeatureProvider {
 }
 
 extension NoOpProvider {
-    struct NoOpMetadata: Metadata {
+    struct NoOpMetadata: ProviderMetadata {
         var name: String?
     }
 }

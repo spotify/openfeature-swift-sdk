@@ -3,7 +3,7 @@ import Foundation
 @testable import OpenFeature
 
 class AlwaysBrokenProvider: FeatureProvider {
-    var metadata: Metadata = AlwaysBrokenMetadata()
+    var metadata: ProviderMetadata = AlwaysBrokenMetadata()
     var hooks: [any Hook] = []
 
     func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
@@ -46,7 +46,7 @@ class AlwaysBrokenProvider: FeatureProvider {
 }
 
 extension AlwaysBrokenProvider {
-    struct AlwaysBrokenMetadata: Metadata {
+    struct AlwaysBrokenMetadata: ProviderMetadata {
         var name: String? = "test"
     }
 }

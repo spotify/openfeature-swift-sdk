@@ -3,7 +3,7 @@ import Foundation
 /// The interface implemented by upstream flag providers to resolve flags for their service.
 public protocol FeatureProvider {
     var hooks: [any Hook] { get }
-    var metadata: Metadata { get }
+    var metadata: ProviderMetadata { get }
 
     /// Called by OpenFeatureAPI whenever the new Provider is registered
     func initialize(initialContext: EvaluationContext?) async

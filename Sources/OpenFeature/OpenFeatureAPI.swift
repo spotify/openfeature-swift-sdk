@@ -42,7 +42,7 @@ public class OpenFeatureAPI {
         return self._context
     }
 
-    public func getProviderMetadata() -> Metadata? {
+    public func getProviderMetadata() -> ProviderMetadata? {
         return self.getProvider()?.metadata
     }
 

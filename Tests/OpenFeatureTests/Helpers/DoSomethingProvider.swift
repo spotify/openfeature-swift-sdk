@@ -13,7 +13,7 @@ class DoSomethingProvider: FeatureProvider {
     }
 
     var hooks: [any OpenFeature.Hook] = []
-    var metadata: OpenFeature.Metadata = DoMetadata()
+    var metadata: OpenFeature.ProviderMetadata = DoMetadata()
 
     func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws
         -> ProviderEvaluation<
@@ -55,7 +55,7 @@ class DoSomethingProvider: FeatureProvider {
         return ProviderEvaluation(value: .null)
     }
 
-    public struct DoMetadata: Metadata {
+    public struct DoMetadata: ProviderMetadata {
         public var name: String? = DoSomethingProvider.name
     }
 }
