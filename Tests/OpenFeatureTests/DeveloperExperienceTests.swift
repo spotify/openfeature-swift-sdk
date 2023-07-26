@@ -11,16 +11,16 @@ final class DeveloperExperienceTests: XCTestCase {
         XCTAssertEqual(flagValue, "no-op")
     }
 
-    func testSimpleBooleanFlag() async {
-        await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
+    func testSimpleBooleanFlag() {
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let flagValue = client.getValue(key: "test", defaultValue: false)
         XCTAssertFalse(flagValue)
     }
 
-    func testClientHooks() async {
-        await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
+    func testClientHooks() {
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let booleanHook = BooleanHookMock()
@@ -40,8 +40,8 @@ final class DeveloperExperienceTests: XCTestCase {
         XCTAssertEqual(intHook.finallyAfterCalled, 1)
     }
 
-    func testEvalHooks() async {
-        await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
+    func testEvalHooks() {
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let booleanHook = BooleanHookMock()
@@ -61,8 +61,8 @@ final class DeveloperExperienceTests: XCTestCase {
         XCTAssertEqual(intHook.finallyAfterCalled, 1)
     }
 
-    func testBrokenProvider() async {
-        await OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
+    func testBrokenProvider() {
+        OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         let client = OpenFeatureAPI.shared.getClient()
 
         let details = client.getDetails(key: "test", defaultValue: false)

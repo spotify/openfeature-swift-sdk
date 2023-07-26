@@ -64,8 +64,11 @@ public class OpenFeatureAPI {
     public func clearHooks() {
         self.hooks.removeAll()
     }
+}
 
-    // MARK: Provider Events
+// MARK: Provider Events
+
+extension OpenFeatureAPI {
 
     public func addHandler(observer: Any, selector: Selector, event: ProviderEvent) {
         providerNotificationCentre.addObserver(
@@ -96,9 +99,6 @@ public class OpenFeatureAPI {
         if let details {
             userInfo.merge(details) { $1 } // Merge, keeping value from `details` if any conflicts
         }
-
-//        let notification = Notification(name: event.notification, userInfo: userInfo)
-//        providerNotificationQueue.enqueue(notification, postingStyle: .asap)
 
         providerNotificationCentre.post(name: event.notification, object: nil, userInfo: userInfo)
     }

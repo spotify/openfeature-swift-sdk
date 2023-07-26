@@ -10,6 +10,7 @@ final class ProviderEventsTests: XCTestCase {
             observer: self, selector: #selector(readyEventEmitted(notification:)), event: .ready
         )
 
+        OpenFeatureAPI.shared.setProvider(provider: provider)
         wait(for: [readyExpectation], timeout: 5)
     }
 
