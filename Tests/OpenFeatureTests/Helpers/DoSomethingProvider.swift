@@ -5,11 +5,11 @@ class DoSomethingProvider: FeatureProvider {
     public static let name = "Something"
 
     func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
-        // no-op
+        OpenFeatureAPI.shared.emitEvent(.configurationChanged, provider: self)
     }
 
     func initialize(initialContext: OpenFeature.EvaluationContext?) {
-        // no-op
+        OpenFeatureAPI.shared.emitEvent(.ready, provider: self)
     }
 
     var hooks: [any OpenFeature.Hook] = []
