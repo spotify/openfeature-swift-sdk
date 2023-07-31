@@ -221,7 +221,7 @@ extension OpenFeatureClient {
 
     @objc public func handleProviderEvent(notification: Notification) {
         var userInfo: [AnyHashable: Any] = notification.userInfo ?? [:]
-        userInfo[ProviderEventDetailsKeyClient] = self
+        userInfo[providerEventDetailsKeyClient] = self
 
         providerNotificationCentre.post(name: notification.name, object: nil, userInfo: userInfo)
     }

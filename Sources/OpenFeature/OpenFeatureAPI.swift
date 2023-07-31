@@ -69,7 +69,6 @@ public class OpenFeatureAPI {
 // MARK: Provider Events
 
 extension OpenFeatureAPI {
-
     public func addHandler(observer: Any, selector: Selector, event: ProviderEvent) {
         providerNotificationCentre.addObserver(
             observer,
@@ -90,10 +89,10 @@ extension OpenFeatureAPI {
         details: [AnyHashable: Any]? = nil
     ) {
         var userInfo: [AnyHashable: Any] = [:]
-        userInfo[ProviderEventDetailsKeyProvider] = provider
+        userInfo[providerEventDetailsKeyProvider] = provider
 
         if let error {
-            userInfo[ProviderEventDetailsKeyError] = error
+            userInfo[providerEventDetailsKeyError] = error
         }
 
         if let details {

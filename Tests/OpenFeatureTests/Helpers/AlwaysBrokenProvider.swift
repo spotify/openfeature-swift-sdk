@@ -7,11 +7,13 @@ class AlwaysBrokenProvider: FeatureProvider {
     var hooks: [any Hook] = []
 
     func onContextSet(oldContext: OpenFeature.EvaluationContext?, newContext: OpenFeature.EvaluationContext) {
-        OpenFeatureAPI.shared.emitEvent(.error, provider: self, error: OpenFeatureError.generalError(message: "Always Fails"))
+        let error = OpenFeatureError.generalError(message: "Always Fails")
+        OpenFeatureAPI.shared.emitEvent(.error, provider: self, error: error)
     }
 
     func initialize(initialContext: OpenFeature.EvaluationContext?) {
-        OpenFeatureAPI.shared.emitEvent(.error, provider: self, error: OpenFeatureError.generalError(message: "Always Fails"))
+        let error = OpenFeatureError.generalError(message: "Always Fails")
+        OpenFeatureAPI.shared.emitEvent(.error, provider: self, error: error)
     }
 
     func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws

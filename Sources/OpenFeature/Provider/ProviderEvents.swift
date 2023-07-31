@@ -1,8 +1,8 @@
 import Foundation
 
-public let ProviderEventDetailsKeyProvider = "Provider"
-public let ProviderEventDetailsKeyClient = "Client"
-public let ProviderEventDetailsKeyError = "Error"
+public let providerEventDetailsKeyProvider = "Provider"
+public let providerEventDetailsKeyClient = "Client"
+public let providerEventDetailsKeyError = "Error"
 
 public enum ProviderEvent: String, CaseIterable {
     case ready = "PROVIDER_READY"
