@@ -29,9 +29,21 @@ Note that this library is intended to be used in a mobile context, and has not b
 
 ## 📦 Installation
 
-### Adding the package dependency
+### Xcode Dependencies
 
-If you manage dependencies through Xcode go to "Add package" and enter `git@github.com:spotify/openfeature-swift-sdk.git`.
+You have two options, both start from File > Add Packages... in the code menu.
+
+First, ensure you have your GitHub account added as an option (+ > Add Source Control Account...). You will need to create a [Personal Access Token](https://github.com/settings/tokens) with the permissions defined in the Xcode interface.
+
+1. Add as a remote repository
+    * Search for `git@github.com:spotify/openfeature-swift-sdk.git` and click "Add Package"
+2. Clone the repository locally
+    * Clone locally using your preferred method
+    * Use the "Add Local..." button to select the local folder
+
+**Note:** Option 2 is only recommended if you are making changes to the client SDK.
+
+### Swift Package Manager
 
 If you manage dependencies through SPM, in the dependencies section of Package.swift add:
 ```swift
@@ -45,10 +57,10 @@ and in the target dependencies section add:
 
 ## 🌟 Features
 
-- support for various backend [providers](https://openfeature.dev/docs/reference/concepts/provider)
-- easy integration and extension via [hooks](https://openfeature.dev/docs/reference/concepts/hooks)
-- bool, string, numeric, and object flag types
-- [context-aware](https://openfeature.dev/docs/reference/concepts/evaluation-context) evaluation
+- Support for various backend [providers](https://openfeature.dev/docs/reference/concepts/provider)
+- Easy integration and extension via [hooks](https://openfeature.dev/docs/reference/concepts/hooks)
+- Bool, string, numeric, and object flag types
+- [Context-aware](https://openfeature.dev/docs/reference/concepts/evaluation-context) evaluation
 
 ## 🚀 Usage
 
@@ -56,20 +68,21 @@ and in the target dependencies section add:
 import OpenFeature
 
 // Configure your custom `FeatureProvider` and pass it to OpenFeatureAPI
-await OpenFeatureAPI.shared.setProvider(provider: customProvider)
+let customProvider = MyCustomProvider()
+OpenFeatureAPI.shared.setProvider(provider: customProvider)
 
 // Configure your evaluation context and pass it to OpenFeatureAPI
 let ctx = MutableContext(
     targetingKey: userId,
     structure: MutableStructure(attributes: ["product": Value.string(productId)]))
-await OpenFeatureAPI.shared.setEvaluationContext(evaluationContext: ctx)
+OpenFeatureAPI.shared.setEvaluationContext(evaluationContext: ctx)
 
 // Get client from OpenFeatureAPI and evaluate your flags
 let client = OpenFeatureAPI.shared.getClient()
 let flagValue = client.getBooleanValue(key: "boolFlag", defaultValue: false)
 ```
 
-Setting a new provider or setting a new evaluation context are asynchronous operations. The provider might execute I/O operations as part of these method calls (e.g. fetching flag evaluations from the backend and store them in a local cache). It's advised to not interact with the OpenFeature client until the `setProvider()` or `setEvaluationContext()` functions have returned successfully.
+Setting a new provider or setting a new evaluation context are synchronous operations. The provider might execute I/O operations as part of these method calls (e.g. fetching flag evaluations from the backend and store them in a local cache). It's advised to not interact with the OpenFeature client until the relevant event has been emitted (see events below).
 
 Please refer to our [documentation on static-context APIs](https://github.com/open-feature/spec/pull/171) for further information on how these APIs are structured for the use-case of mobile clients.
 
@@ -78,7 +91,11 @@ Please refer to our [documentation on static-context APIs](https://github.com/op
 Events allow you to react to state changes in the provider or underlying flag management system, such as flag definition changes, provider readiness, or error conditions.
 Initialization events (`PROVIDER_READY` on success, `PROVIDER_ERROR` on failure) are emitted for every provider.
 Some providers support additional events, such as `PROVIDER_CONFIGURATION_CHANGED`.
-Please refer to the documentation of the provider you're using to see what events are supported.
+Please refer to the documentation of the provider you're using to see what events are supported and when they are emitted.
+
+To register a handler for API level provider events, use the `OpenFeatureAPI` `addHandler(observer:selector:event:)` function. Event handlers can also be removed using the equivalent `removeHandler` function. `Client`s also provide add and remove functions for listening to that specific client. A `ProviderEvent` enum is defined to ease subscription.
+
+Events can contain extra information in the `userInfo` dictionary of the notification. All events will contain a reference to the provider that emitted the event (under the `providerEventDetailsKeyProvider` key). Error events will also provide a reference to the underlying error (under the `providerEventDetailsKeyError` key). Finally, client specific events will contain a reference to the client (under the `providerEventDetailsKeyClient` key)
 
 ### Providers
 
@@ -157,8 +174,8 @@ Interested in contributing? Great, we'd love your help! To get started, take a l
 
 ### Thanks to everyone that has already contributed
 
-<a href="https://github.com/open-feature/kotlin-sdk/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=open-feature/kotlin-sdk" alt="Pictures of the folks who have contributed to the project" />
+<a href="https://github.com/open-feature/swift-sdk/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=open-feature/swift-sdk" alt="Pictures of the folks who have contributed to the project" />
 </a>
 
 Made with [contrib.rocks](https://contrib.rocks).
