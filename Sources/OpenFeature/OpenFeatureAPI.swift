@@ -37,8 +37,9 @@ public class OpenFeatureAPI {
     }
 
     public func setEvaluationContext(evaluationContext: EvaluationContext) {
-        getProvider()?.onContextSet(oldContext: self._context, newContext: evaluationContext)
+        let oldContext = self._context
         self._context = evaluationContext
+        getProvider()?.onContextSet(oldContext: oldContext, newContext: evaluationContext)
     }
 
     public func getEvaluationContext() -> EvaluationContext? {
