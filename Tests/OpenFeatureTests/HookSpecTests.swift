@@ -4,12 +4,22 @@ import XCTest
 @testable import OpenFeature
 
 final class HookSpecTests: XCTestCase {
-    func testNoErrorHookCalled() async {
-        await OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
+    override func setUp() {
+        OpenFeatureAPI.shared.addHandler(
+            observer: self, selector: #selector(readyEventEmitted(notification:)), event: .ready
+        )
+
+        OpenFeatureAPI.shared.addHandler(
+            observer: self, selector: #selector(errorEventEmitted(notification:)), event: .error
+        )
+    }
+
+    func testNoErrorHookCalled() {
+        OpenFeatureAPI.shared.setProvider(provider: NoOpProvider())
+        wait(for: [readyExpectation], timeout: 5)
+
         let client = OpenFeatureAPI.shared.getClient()
-
         let hook = BooleanHookMock()
-
         let feo = FlagEvaluationOptions(hooks: [hook])
 
         _ = client.getValue(
@@ -23,8 +33,10 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testErrorHookButNoAfterCalled() async {
-        await OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
+    func testErrorHookButNoAfterCalled() {
+        OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
+        wait(for: [errorExpectation], timeout: 5)
+
         let client = OpenFeatureAPI.shared.getClient()
         let hook = BooleanHookMock()
 
@@ -39,7 +51,7 @@ final class HookSpecTests: XCTestCase {
         XCTAssertEqual(hook.finallyAfterCalled, 1)
     }
 
-    func testHookEvaluationOrder() async {
+    func testHookEvaluationOrder() {
         var evalOrder: [String] = []
         let addEval: (String) -> Void = { eval in
             evalOrder.append(eval)
@@ -48,7 +60,9 @@ final class HookSpecTests: XCTestCase {
         let providerMock = NoOpProviderMock(hooks: [
             BooleanHookMock(prefix: "provider", addEval: addEval)
         ])
-        await OpenFeatureAPI.shared.setProvider(provider: providerMock)
+        OpenFeatureAPI.shared.setProvider(provider: providerMock)
+        wait(for: [readyExpectation], timeout: 5)
+        
         OpenFeatureAPI.shared.addHooks(hooks: BooleanHookMock(prefix: "api", addEval: addEval))
         let client = OpenFeatureAPI.shared.getClient()
         client.addHooks(BooleanHookMock(prefix: "client", addEval: addEval))
@@ -74,6 +88,19 @@ final class HookSpecTests: XCTestCase {
                 "client finallyAfter",
                 "api finallyAfter",
             ])
+    }
+
+    // MARK: Event Handlers
+    let readyExpectation = XCTestExpectation(description: "Ready")
+
+    func readyEventEmitted(notification: NSNotification) {
+        readyExpectation.fulfill()
+    }
+
+    let errorExpectation = XCTestExpectation(description: "Error")
+
+    func errorEventEmitted(notification: NSNotification) {
+        errorExpectation.fulfill()
     }
 }
 
