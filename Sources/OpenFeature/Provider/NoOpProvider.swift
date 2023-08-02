@@ -4,15 +4,20 @@ import Foundation
 class NoOpProvider: FeatureProvider {
     public static let passedInDefault = "Passed in default"
 
+    public enum Mode {
+        case normal
+        case error(message: String)
+    }
+
     var metadata: ProviderMetadata = NoOpMetadata(name: "No-op provider")
     var hooks: [any Hook] = []
 
     func onContextSet(oldContext: EvaluationContext?, newContext: EvaluationContext) {
-        // no-op
+        OpenFeatureAPI.shared.emitEvent(.configurationChanged, provider: self)
     }
 
     func initialize(initialContext: EvaluationContext?) {
-        // no-op
+        OpenFeatureAPI.shared.emitEvent(.ready, provider: self)
     }
 
     func getBooleanEvaluation(key: String, defaultValue: Bool, context: EvaluationContext?) throws
