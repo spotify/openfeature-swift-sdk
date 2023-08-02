@@ -5,6 +5,8 @@ import XCTest
 
 final class FlagEvaluationTests: XCTestCase {
     override func setUp() {
+        super.setUp()
+
         OpenFeatureAPI.shared.addHandler(
             observer: self, selector: #selector(readyEventEmitted(notification:)), event: .ready
         )
@@ -167,7 +169,7 @@ final class FlagEvaluationTests: XCTestCase {
     func testBrokenProvider() {
         OpenFeatureAPI.shared.setProvider(provider: AlwaysBrokenProvider())
         wait(for: [errorExpectation], timeout: 5)
-        
+
         let client = OpenFeatureAPI.shared.getClient()
 
         XCTAssertFalse(client.getValue(key: "testkey", defaultValue: false))

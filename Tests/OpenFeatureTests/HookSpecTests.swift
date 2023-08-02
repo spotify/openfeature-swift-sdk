@@ -5,6 +5,8 @@ import XCTest
 
 final class HookSpecTests: XCTestCase {
     override func setUp() {
+        super.setUp()
+
         OpenFeatureAPI.shared.addHandler(
             observer: self, selector: #selector(readyEventEmitted(notification:)), event: .ready
         )
@@ -62,7 +64,7 @@ final class HookSpecTests: XCTestCase {
         ])
         OpenFeatureAPI.shared.setProvider(provider: providerMock)
         wait(for: [readyExpectation], timeout: 5)
-        
+
         OpenFeatureAPI.shared.addHooks(hooks: BooleanHookMock(prefix: "api", addEval: addEval))
         let client = OpenFeatureAPI.shared.getClient()
         client.addHooks(BooleanHookMock(prefix: "client", addEval: addEval))
